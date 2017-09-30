@@ -17,7 +17,7 @@ class Main_Scraper:
         ]
         self.display = Display(visible=0, size=(1500, 800))
         self.display.start()
-        self.driver = webdriver.Chrome('chromedriver')
+        self.driver = webdriver.Chrome('/root/Money_Exchange_Scrapers/chromedriver')
         self.mongo = MongoClient()
         db = self.mongo['transfer_rates']
         self.records = db['records']
@@ -27,7 +27,7 @@ class Main_Scraper:
             royal_bank(soup, self.records)
         elif 'tdcommercial' in url:
             tdcommercialbanking(soup, self.records)
-        elif 'bmo' in url:
+        elif 'bmo' in   url:
             bmo(soup, self.records)
         elif 'scotia' in url:
             scotia_bank(soup, self.records)
