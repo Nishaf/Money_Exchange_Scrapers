@@ -1,0 +1,141 @@
+
+def royal_bank(soup, records):
+    table = soup.find_all('table')
+    tr = table[5].find_all('tr')
+    headers = tr[0]
+    headers = headers.find_all('td')
+    headers = [(i.text).strip() for i in headers]
+    print(headers[0] + "   " + headers[1] + "   " + headers[3] + "       1CAD = ?")
+
+    data = tr[1:]
+    currencies = ['USD', 'GBP', 'INR', 'MXN', 'PKR', 'PHP']
+
+    for row in data:
+        td = row.find_all('td')
+        string = ""
+        currency = td[1].text
+        currency = currency[currency.find("(") + 1:currency.find(")")]
+        if currency in currencies:
+            try:
+                convert = str(1.0 / float(td[3].text))
+            except:
+                convert = None
+            string += td[0].text + "   " + td[1].text + "   " + td[3].text + "   ===============>  " + convert
+            add_to_database(records,'img/web_logo/rbc_royalbank_en.gif', 'Royal Bank', currency, '0.00', '3 Days', convert)
+            #print(string)
+
+def bmo(soup, records):
+    table = soup.find('table', attrs={'id': 'ratesTable'})
+    tr = table.find_all('tr')
+    headers = tr[0]
+    headers = headers.find_all('th')
+    headers = [(i.text).strip() for i in headers]
+    print(headers[0] + "   " + headers[1] + "   " + headers[3] + "       1CAD = ?")
+
+    data = tr[1:]
+    currencies = ['USD', 'GBP', 'INR', 'MXN', 'PKR', 'PHP']
+    for row in data:
+        td = row.find_all('td')
+        string = ""
+        currency = td[1].text
+        currency = currency[currency.find("(") + 1:currency.find(")")]
+        if currency in currencies:
+            try:
+                convert = str(1.0 / float(td[3].text))
+            except:
+                convert = None
+            string += td[0].text + "   " + td[1].text + "   " + td[3].text + "   ===============>  " + convert
+            add_to_database(records,'img/web_logo/logo_bmo.gif', 'Bank of Montreal', currency, '0.00', '2 Days', convert)
+            #print(string)
+
+def scotia_bank(soup, records):
+    table = soup.find('table', attrs={'class': 'rates'})
+    tr = table.find_all('tr')
+    headers = tr[0]
+    headers = headers.find_all('td')
+    data = tr[1:]
+    print(headers[0].text + "   " + headers[1].text + "   " + headers[2].text + "        1 CAD = ?")
+    currencies = ['USD', 'GBP', 'INR', 'MXN', 'PKR', 'PHP']
+    for row in data:
+        td = row.find_all('td')
+        currency = td[1].text
+        currency = currency[currency.find("(") + 1:currency.find(")")]
+        if currency in currencies:
+            try:
+                convert = str(1.0 / float(td[2].text))
+            except:
+                convert = None
+            #print(td[0].text + "   " + td[1].text + "   " + td[2].text + "  =============> " + convert)
+            add_to_database(records, 'img/web_logo/logo-scotiabank-lrg.png', 'Scotia Bank', currency, '0.00', '4 Days', convert)
+
+
+def tdcommercialbanking(soup, records):
+    table = soup.find('table')
+    tr = table.find_all('tr')
+    headers = tr[0]
+    headers = headers.find_all('th')
+    data = tr[1:]
+
+    print(headers[0].text + "   " + headers[1].text + "   " + headers[2].text + "        1 CAD = ?")
+    countries = ['USD', 'GBP', 'INR', 'MXN', 'PKR', 'PHP']
+    for row in data:
+        td = row.find_all('td')
+        if (td[0].text).strip() in countries:
+            try:
+                convert = str(1.0 / float(td[2].text))
+            except:
+                convert = None
+            #print(td[0].text + "   " + td[1].text + "   " + td[2].text + "  =============> " + convert)
+            add_to_database(records, 'img/web_logo/td_commercial_shield_en.gif', 'Toronto Dominion Bank', td[0].text, '0.00', '1 Days', convert)
+
+
+def hsbc(soup, records):
+    table = soup.find('table', attrs={'class': 'hsbcTableStyleViewRates'})
+    tr = table.find_all('tr')
+    headers = tr[0]
+    headers = headers.find_all('th')
+    data = tr[1:]
+    print(headers[0].text + "   " + headers[1].text + "   " + headers[2].text + "        1 CAD = ?")
+    currencies = ['USD', 'GBP', 'INR', 'MXN', 'PKR', 'PHP']
+    for row in data:
+        td = row.find_all('td')
+        currency = td[1].text
+        if currency in currencies:
+            try:
+                convert = str(1.0 / float(td[2].text))
+            except:
+                convert = None
+            #print(td[0].text + "   " + td[1].text + "   " + td[2].text + "  =============> " + convert)
+            add_to_database(records,'img/web_logo/hsbc-logo.gif', 'HSBC Bank', currency, '0.00', '5 Days', convert)
+
+
+
+
+def add_to_database(records_col, bank_logo, bank_name, currency, transfer_fee, transfer_time, rate):
+    if records_col.find({'bank_name': bank_name, 'currency':currency}).count() == 0:
+        print("Inserting")
+        records_col.insert(
+            {
+                'bank_logo': bank_logo,
+                'bank_name': bank_name,
+                'currency': currency,
+                'transfer_fee': transfer_fee,
+                'transfer_time': transfer_time,
+                'rate': rate,
+            }
+        )
+    else:
+        print("Updating")
+        records_col.update(
+            {'bank_name': bank_name, 'currency': currency},
+            {
+                'bank_logo': bank_logo,
+                'bank_name': bank_name,
+                'currency': currency,
+                'transfer_fee': transfer_fee,
+                'transfer_time': transfer_time,
+                'rate': rate,
+            }
+        )
+
+
