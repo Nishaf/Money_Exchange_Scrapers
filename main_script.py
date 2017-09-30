@@ -17,7 +17,7 @@ class Main_Scraper:
         ]
         self.display = Display(visible=0, size=(1500, 800))
         self.display.start()
-        self.driver = webdriver.Chrome('/home/nishaf/chromedriver')
+        self.driver = webdriver.Chrome('chromedriver')
         self.mongo = MongoClient()
         db = self.mongo['transfer_rates']
         self.records = db['records']
