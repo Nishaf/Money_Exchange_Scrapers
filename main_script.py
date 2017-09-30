@@ -49,5 +49,5 @@ if __name__ == "__main__":
     time_break = 1
     while True:
         Main_Scraper().run()
-        print("Going to Sleep for " + str(time_break * 60) + ' seconds.')
+        print("Going to Sleep for " + str(time_break * 60) + ' seconds!!')
         sleep(int(time_break) * 60)
