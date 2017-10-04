@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from pyvirtualdisplay import Display
 from bank_scrapers import *
 from pymongo import MongoClient
-
+from daemon import runner
 
 class Main_Scraper:
     def __init__(self):
@@ -47,9 +47,33 @@ class Main_Scraper:
         self.driver.close()
 
 
-if __name__ == "__main__":
-    time_break = 1
-    while True:
-        Main_Scraper().run()
-        print("Going to Sleep for " + str(time_break * 60) + ' seconds!!')
-        sleep(int(time_break) * 60)
+
+class App:
+    def run(self):
+        time_break = 1
+        while True:
+            Main_Scraper().run()
+            print("Going to Sleep for " + str(time_break * 60) + ' seconds!!')
+            sleep(int(time_break) * 60)
+
+
+#if __name__ == "__main__":
+ #   app = App()
+ #   daemon_runner = runner.DaemonRunner(app)
+ #   daemon_runner.do_action()
+
+
+from pymongo import MongoClient
+
+
+try:
+    mongo = MongoClient('mongodb://45.56.221.44:27017')
+except:
+    print("connection refused")
+try:
+    db = mongo['transfer_rates']
+    item = db['records']
+
+    print(item.count())
+except:
+    print('db not available')
