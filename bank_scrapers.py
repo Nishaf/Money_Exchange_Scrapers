@@ -125,7 +125,7 @@ def add_to_database(records_col, bank_logo, bank_name, currency, transfer_fee, t
             }
         )
     else:
-        print("Updating")
+        print("Updating Database")
         records_col.update(
             {'bank_name': bank_name, 'currency': currency},
             {
