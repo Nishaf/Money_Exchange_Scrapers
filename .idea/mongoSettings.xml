@@ -4,10 +4,10 @@
     <option name="serverConfigurations">
       <list>
         <ServerConfiguration>
-          <option name="label" value="Localhost" />
+          <option name="label" value="Server" />
           <option name="serverUrls">
             <list>
-              <option value="localhost:27017" />
+              <option value="45.56.221.43:2217" />
             </list>
           </option>
           <option name="sshTunnelingConfiguration">
