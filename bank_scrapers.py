@@ -1,3 +1,4 @@
+from pymongo import MongoClient
 
 def royal_bank(soup, records):
     table = soup.find_all('table')
@@ -139,3 +140,20 @@ def add_to_database(records_col, bank_logo, bank_name, currency, transfer_fee, t
         )
 
 
+
+
+def insert_all():
+    mongo = MongoClient()
+    db=mongo['transfer_rates']
+    items = db['flags']
+    items.insert({'country':'canada','flag':'/img/icon/canada.jpg'})
+    items.insert({'country':'india','flag':'/img/icon/india.jpg'})
+    items.insert({'country':'mexico','flag':'/img/icon/mexico.jpg'})
+    items.insert({'country':'pakistan','flag':'/img/icon/pakistan.jpg'})
+    items.insert({'country':'uk','flag':'/img/icon/uk.jpg'})
+    items.insert({'country':'usa','flag':'/img/icon/usa.jpg'})
+
+    mongo.close()
+
+
+insert_all()
