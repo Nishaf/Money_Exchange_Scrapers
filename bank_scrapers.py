@@ -41,8 +41,8 @@ def bmo(soup, records):
     headers = headers.find_all('th')
     headers = [(i.text).strip() for i in headers]
     print(headers[0] + "   " + headers[1] + "   " + headers[3] + "       1CAD = ?")
-    time = 'UPDATED'
-    text = "Rates are provided for information purposes only and are subject to change at any time."
+    time = (soup.find('p', attrs={'class': 'first bold'}).text).strip()
+    text = "Foreign exchange rates are subject to change at any time."
     data = tr[1:]
     currencies = ['USD', 'GBP', 'INR', 'MXN', 'PKR', 'PHP']
     for row in data:
