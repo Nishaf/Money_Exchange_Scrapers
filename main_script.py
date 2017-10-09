@@ -4,7 +4,6 @@ from bs4 import BeautifulSoup
 from pyvirtualdisplay import Display
 from bank_scrapers import *
 from pymongo import MongoClient
-from daemon import runner
 
 class Main_Scraper:
     def __init__(self):
