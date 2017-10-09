@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 from pyvirtualdisplay import Display
 from bank_scrapers import *
 from pymongo import MongoClient
+from daemon import runner
 
 class Main_Scraper:
     def __init__(self):
@@ -18,7 +19,7 @@ class Main_Scraper:
         self.display.start()
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--no-sandbox')
-        self.driver = webdriver.Chrome('/usr/local/bin/chromedriver', chrome_options=chrome_options) ## Driver Path
+        self.driver = webdriver.Chrome('/usr/local/bin/chromedriver', chrome_options=chrome_options)
         self.mongo = MongoClient()
         db = self.mongo['transfer_rates']
         self.records = db['records']
