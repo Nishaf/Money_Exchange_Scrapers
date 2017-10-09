@@ -41,7 +41,10 @@ def bmo(soup, records):
     headers = headers.find_all('th')
     headers = [(i.text).strip() for i in headers]
     print(headers[0] + "   " + headers[1] + "   " + headers[3] + "       1CAD = ?")
-    time = (soup.find('p', attrs={'class': 'first bold'}).text).strip()
+    time = soup.find('p', attrs={'class': 'first bold'})
+    time.find('script').replaceWith('')
+    time = time.text
+
     text = "Foreign exchange rates are subject to change at any time."
     data = tr[1:]
     currencies = ['USD', 'GBP', 'INR', 'MXN', 'PKR', 'PHP']
