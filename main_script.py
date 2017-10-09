@@ -19,7 +19,7 @@ class Main_Scraper:
         self.display.start()
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--no-sandbox')
-        self.driver = webdriver.Chrome('/usr/local/bin/chromedriver', chrome_options=chrome_options)
+        self.driver = webdriver.Chrome('/home/nishaf/chromedriver')#('/usr/local/bin/chromedriver', chrome_options=chrome_options)
         self.mongo = MongoClient()
         db = self.mongo['transfer_rates']
         self.records = db['records']
@@ -48,24 +48,16 @@ class Main_Scraper:
 
 
 
-class App:
-    def run(self):
-        time_break = 1
-        while True:
-            Main_Scraper().run()
-            print("Going to Sleep for " + str(time_break * 60) + ' seconds!!')
-            sleep(int(time_break) * 60)
+if __name__ == '__main__':
+    time_break = 1
+    while True:
+        Main_Scraper().run()
+        print("Going to Sleep for " + str(time_break * 60) + ' seconds!!')
+        sleep(int(time_break) * 60)
 
 
-#if __name__ == "__main__":
- #   app = App()
- #   daemon_runner = runner.DaemonRunner(app)
- #   daemon_runner.do_action()
 
-
-from pymongo import MongoClient
-
-
+'''
 try:
     mongo = MongoClient('mongodb://45.56.221.44:27017')
 except:
@@ -77,3 +69,4 @@ try:
     print(item.count())
 except:
     print('db not available')
+'''
