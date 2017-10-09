@@ -19,7 +19,7 @@ class Main_Scraper:
         self.display.start()
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--no-sandbox')
-        self.driver = webdriver.Chrome('/usr/local/bin/chromedriver', chrome_options=chrome_options) #Driver path
+        self.driver = webdriver.Chrome('/usr/local/bin/chromedriver', chrome_options=chrome_options)
         self.mongo = MongoClient()
         db = self.mongo['transfer_rates']
         self.records = db['records']
