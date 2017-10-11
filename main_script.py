@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from pyvirtualdisplay import Display
 from bank_scrapers import *
 from pymongo import MongoClient
-
+from datetime import datetime
 class Main_Scraper:
     def __init__(self):
         self.urls = [
@@ -18,7 +18,7 @@ class Main_Scraper:
         self.display.start()
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--no-sandbox')
-        self.driver = webdriver.Chrome('/home/Money_Exchange_Scrapers/chromedriver', chrome_options=chrome_options)##
+        self.driver = webdriver.Chrome('/home/nishaf/chromedriver')#('/home/Money_Exchange_Scrapers/chromedriver', chrome_options=chrome_options)##
         self.mongo = MongoClient()
         db = self.mongo['transfer_rates']
         self.records = db['records']
@@ -48,11 +48,15 @@ class Main_Scraper:
 
 
 if __name__ == '__main__':
-    time_break = 1
+    time_break = 720
     while True:
+        print("Starting Time: " + str(datetime.now()))
         Main_Scraper().run()
         print("Going to Sleep for " + str(time_break * 60) + ' seconds!!')
+        print("Ending Time: " + str(datetime.now()))
+        print("Going to Sleep")
         sleep(int(time_break) * 60)
+
 
 
 
