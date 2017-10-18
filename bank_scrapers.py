@@ -61,7 +61,7 @@ def bmo(soup, records):
             except:
                 convert = None
             string += td[0].text + "   " + td[1].text + "   " + td[3].text + "   ===============>  " + convert
-            add_to_database(records,'img/web_logo/logo_bmo.gif', 'Bank of Montreal',
+            add_to_database(records,'img/web_logo/bmo1.jpg', 'Bank of Montreal',
                             currency, '$40.00', '3 to 4 business days', convert, time, text,
                             'https://www.bmo.com/home/personal/banking/rates/foreign-exchange')
             #print(string)
@@ -86,7 +86,7 @@ def scotia_bank(soup, records):
             except:
                 convert = None
             #print(td[0].text + "   " + td[1].text + "   " + td[2].text + "  =============> " + convert)
-            add_to_database(records, 'img/web_logo/logo-scotiabank-lrg.png', 'Scotia Bank',
+            add_to_database(records, 'img/web_logo/scotiabank.jpg', 'Scotia Bank',
                             currency, '$40.00', '3 to 4 business days', convert, time, text,
                             'http://www.scotiabank.com/ca/en/0,,1118,00.html')
 
@@ -109,7 +109,7 @@ def tdcommercialbanking(soup, records):
             except:
                 convert = None
             #print(td[0].text + "   " + td[1].text + "   " + td[2].text + "  =============> " + convert)
-            add_to_database(records, 'img/web_logo/td.png', 'Toronto Dominion Bank', td[0].text,
+            add_to_database(records, 'img/web_logo/td1.jpg', 'Toronto Dominion Bank', td[0].text,
                             '$40.00','3 to 4 business days', convert, time, text,
                             'https://www.tdcommercialbanking.com/rates/index.jsp')
 
