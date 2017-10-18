@@ -31,7 +31,9 @@ def royal_bank(soup, records):
             except:
                 convert = None
             string += td[0].text + "   " + td[1].text + "   " + td[3].text + "   ===============>  " + convert
-            add_to_database(records,'img/web_logo/rbc_royalbank_en.png', 'Royal Bank', currency, '$40.00', '3 to 4 business days', convert, time, text)
+            add_to_database(records,'img/web_logo/rbc_royalbank_en.png', 'Royal Bank', currency,
+                            '$40.00', '3 to 4 business days', convert, time, text,
+                            'http://www.rbcroyalbank.com/rates/rates/cashrates.html')
             #print(string)
 
 def bmo(soup, records):
@@ -59,7 +61,9 @@ def bmo(soup, records):
             except:
                 convert = None
             string += td[0].text + "   " + td[1].text + "   " + td[3].text + "   ===============>  " + convert
-            add_to_database(records,'img/web_logo/logo_bmo.gif', 'Bank of Montreal', currency, '$40.00', '3 to 4 business days', convert, time, text)
+            add_to_database(records,'img/web_logo/logo_bmo.gif', 'Bank of Montreal',
+                            currency, '$40.00', '3 to 4 business days', convert, time, text,
+                            'https://www.bmo.com/home/personal/banking/rates/foreign-exchange')
             #print(string)
 
 def scotia_bank(soup, records):
@@ -82,7 +86,9 @@ def scotia_bank(soup, records):
             except:
                 convert = None
             #print(td[0].text + "   " + td[1].text + "   " + td[2].text + "  =============> " + convert)
-            add_to_database(records, 'img/web_logo/logo-scotiabank-lrg.png', 'Scotia Bank', currency, '$40.00', '3 to 4 business days', convert, time, text)
+            add_to_database(records, 'img/web_logo/logo-scotiabank-lrg.png', 'Scotia Bank',
+                            currency, '$40.00', '3 to 4 business days', convert, time, text,
+                            'http://www.scotiabank.com/ca/en/0,,1118,00.html')
 
 
 def tdcommercialbanking(soup, records):
@@ -103,7 +109,9 @@ def tdcommercialbanking(soup, records):
             except:
                 convert = None
             #print(td[0].text + "   " + td[1].text + "   " + td[2].text + "  =============> " + convert)
-            add_to_database(records, 'img/web_logo/td_commercial_shield_en.gif', 'Toronto Dominion Bank', td[0].text, '$40.00', '3 to 4 business days', convert, time, text)
+            add_to_database(records, 'img/web_logo/td.png', 'Toronto Dominion Bank', td[0].text,
+                            '$40.00','3 to 4 business days', convert, time, text,
+                            'https://www.tdcommercialbanking.com/rates/index.jsp')
 
 
 def hsbc(soup, records):
@@ -125,12 +133,14 @@ def hsbc(soup, records):
             except:
                 convert = None
             #print(td[0].text + "   " + td[1].text + "   " + td[2].text + "  =============> " + convert)
-            add_to_database(records,'img/web_logo/hsbc-logo.gif', 'HSBC Bank', currency, '$40.00', '3 to 4 business days', convert, time, text)
+            add_to_database(records,'img/web_logo/hsbc-logo.gif', 'HSBC Bank', currency,
+                            '$40.00', '3 to 4 business days', convert, time, text,
+                            'http://www.hsbc.ca/1/2/personal/banking/accounts/foreign-currency-accounts/foreign-currency-exchange')
 
 
 
 
-def add_to_database(records_col, bank_logo, bank_name, currency, transfer_fee, transfer_time, rate, time, text):
+def add_to_database(records_col, bank_logo, bank_name, currency, transfer_fee, transfer_time, rate, time, text, web_link):
     if records_col.find({'bank_name': bank_name, 'currency':currency}).count() == 0:
         print("Inserting")
         records_col.insert(
@@ -143,6 +153,7 @@ def add_to_database(records_col, bank_logo, bank_name, currency, transfer_fee, t
                 'rate': rate,
                 'time': time,
                 'bank_note': text,
+                'web_link':web_link,
             }
         )
     else:
@@ -157,7 +168,8 @@ def add_to_database(records_col, bank_logo, bank_name, currency, transfer_fee, t
                 'transfer_time': transfer_time,
                 'rate': rate,
                 'time': time,
-                'bank_note': text
+                'bank_note': text,
+                'web_link':web_link,
             }
         )
 
