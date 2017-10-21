@@ -22,18 +22,19 @@ class Main_Scraper:
         self.mongo = MongoClient()
         db = self.mongo['transfer_rates']
         self.records = db['records']
+        self.country_list = db['country_list']
 
     def run_scraper(self, url, soup):
         if 'royalbank' in url:
-            royal_bank(soup, self.records)
+            royal_bank(soup, self.records,self.country_list)
         elif 'tdcommercial' in url:
-            tdcommercialbanking(soup, self.records)
+            tdcommercialbanking(soup, self.records, self.country_list)
         elif 'bmo' in   url:
-            bmo(soup, self.records)
+            bmo(soup, self.records, self.country_list)
         elif 'scotia' in url:
-            scotia_bank(soup, self.records)
+            scotia_bank(soup, self.records, self.country_list)
         elif 'hsbc' in url:
-            hsbc(soup, self.records)
+            hsbc(soup, self.records, self.country_list)
 
     def run(self):
         for i in self.urls:
@@ -73,3 +74,4 @@ try:
 except:
     print('db not available')
 '''
+

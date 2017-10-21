@@ -1,7 +1,21 @@
 from pymongo import MongoClient
 import re
 
-def royal_bank(soup, records):
+
+def get_country_list(countries):
+    currencies = countries.find()
+    country_list = []
+    for i in currencies:
+        country_list.append(i['country_name'])
+    return country_list
+
+
+def get_list(countries):
+    currencies = countries.find()
+    return currencies
+
+
+def royal_bank(soup, records, countries_list):
     table = soup.find_all('table')
     tr = table[5].find_all('tr')
     headers = tr[0]
@@ -9,7 +23,6 @@ def royal_bank(soup, records):
     headers = [(i.text).strip() for i in headers]
     print(headers[0] + "   " + headers[1] + "   " + headers[3] + "       1CAD = ?")
     data = tr[1:]
-    currencies = ['USD', 'GBP', 'INR', 'MXN', 'PKR', 'PHP']
     #########BRAND-TEXT############
     tr = table[4].find_all('tr')
     td = tr[3].find('td', attrs={'valign': 'top'})
@@ -20,23 +33,35 @@ def royal_bank(soup, records):
     text = (second_text.find('p').text).strip()
     ###############################
 
+    country_list = get_country_list(countries_list)
+    euro = data[1]
+    euro = euro.find_all('td')
+    value, convert ="",""
     for row in data:
         td = row.find_all('td')
         string = ""
-        currency = td[1].text
-        currency = currency[currency.find("(") + 1:currency.find(")")]
-        if currency in currencies:
-            try:
+        country = td[0].text
+        if country in country_list:
+            if (td[3].text).strip() == 'Refer to Euro':
+                value = euro[3].text
+                convert = str(1.0 / float(euro[3].text))
+            elif td[3].text != 'N/A':
+                value = td[3].text
                 convert = str(1.0 / float(td[3].text))
-            except:
-                convert = None
-            string += td[0].text + "   " + td[1].text + "   " + td[3].text + "   ===============>  " + convert
-            add_to_database(records,'img/web_logo/rbc_royalbank_en.png', 'Royal Bank', currency,
-                            '$40.00', '3 to 4 business days', convert, time, text,
-                            'http://www.rbcroyalbank.com/rates/rates/cashrates.html')
+            data1 = countries_list.find_one({'country_name': country})
+            string += td[0].text + "   " + td[1].text + "   " + data1[
+                'cur_sign'] + "   " + value + "   ===============>  " + convert
+
+            print('Royal Bank', country, data1['currency'],
+                            data1['cur_sign'],'$40.00', '3 to 4 business days', convert, time, text,
+                                'img/web_logo/rbc_royalbank_en.png','http://www.rbcroyalbank.com/rates/rates/cashrates.html')
+            add_to_database(records, 'Royal Bank', country, data1['currency'],
+                            data1['cur_sign'],'$40.00', '3 to 4 business days', convert, time, text,
+                                'img/web_logo/rbc_royalbank_en.png','http://www.rbcroyalbank.com/rates/rates/cashrates.html')
             #print(string)
 
-def bmo(soup, records):
+
+def bmo(soup, records, countries_list):
     table = soup.find('table', attrs={'id': 'ratesTable'})
     tr = table.find_all('tr')
     headers = tr[0]
@@ -49,49 +74,60 @@ def bmo(soup, records):
 
     text = "Foreign exchange rates are subject to change at any time."
     data = tr[1:]
-    currencies = ['USD', 'GBP', 'INR', 'MXN', 'PKR', 'PHP']
+    country_list = get_country_list(countries_list)
     for row in data:
         td = row.find_all('td')
         string = ""
-        currency = td[1].text
-        currency = currency[currency.find("(") + 1:currency.find(")")]
-        if currency in currencies:
+        country = td[0].text
+        if country == 'United Kingdom':
+            country = 'Great Britain'
+        if country in country_list:
             try:
                 convert = str(1.0 / float(td[3].text))
             except:
                 convert = None
+
+            data1 = countries_list.find_one({'country_name': country})
             string += td[0].text + "   " + td[1].text + "   " + td[3].text + "   ===============>  " + convert
-            add_to_database(records,'img/web_logo/bmo1.jpg', 'Bank of Montreal',
-                            currency, '$40.00', '3 to 4 business days', convert, time, text,
-                            'https://www.bmo.com/home/personal/banking/rates/foreign-exchange')
+            print('Bank of Montreal',country,data1['currency'],data1['cur_sign'],
+                            '$40.00', '3 to 4 business days', convert, time, text,
+                            'img/web_logo/bmo1.jpg', 'https://www.bmo.com/home/personal/banking/rates/foreign-exchange')
+            add_to_database(records,'Bank of Montreal',country, data1['currency'],data1['cur_sign'],
+                            '$40.00', '3 to 4 business days', convert, time, text,
+                            'img/web_logo/bmo1.jpg', 'https://www.bmo.com/home/personal/banking/rates/foreign-exchange')
             #print(string)
 
-def scotia_bank(soup, records):
+
+def scotia_bank(soup, records, countries_list):
     table = soup.find('table', attrs={'class': 'rates'})
     tr = table.find_all('tr')
     headers = tr[0]
     headers = headers.find_all('td')
     data = tr[1:]
     print(headers[0].text + "   " + headers[1].text + "   " + headers[2].text + "        1 CAD = ?")
-    currencies = ['USD', 'GBP', 'INR', 'MXN', 'PKR', 'PHP']
     time = soup.find('li', attrs={'class': 'effective-date'}).text
     text = 'Rates are provided for information purposes only and are subject to change at any time.'
+    country_list = get_country_list(countries_list)
     for row in data:
         td = row.find_all('td')
-        currency = td[1].text
-        currency = currency[currency.find("(") + 1:currency.find(")")]
-        if currency in currencies:
+        country = td[0].text
+        if country in country_list:
             try:
                 convert = str(1.0 / float(td[2].text))
             except:
                 convert = None
             #print(td[0].text + "   " + td[1].text + "   " + td[2].text + "  =============> " + convert)
-            add_to_database(records, 'img/web_logo/scotiabank.jpg', 'Scotia Bank',
-                            currency, '$40.00', '3 to 4 business days', convert, time, text,
-                            'http://www.scotiabank.com/ca/en/0,,1118,00.html')
+            data1 = countries_list.find_one({'country_name': country})
+            print('Scotia Bank',country, data1['currency'],data1['cur_sign'],
+                '$40.00', '3 to 4 business days', convert, time, text,
+                'img/web_logo/scotiabank.jpg','http://www.scotiabank.com/ca/en/0,,1118,00.html')
+            add_to_database(records, 'Scotia Bank',country, data1['currency'],data1['cur_sign'],
+                            '$40.00', '3 to 4 business days', convert, time, text,
+                            'img/web_logo/scotiabank.jpg', 'http://www.scotiabank.com/ca/en/0,,1118,00.html')
 
 
-def tdcommercialbanking(soup, records):
+
+def tdcommercialbanking(soup, records, countries_list):
     table = soup.find('table')
     tr = table.find_all('tr')
     headers = tr[0]
@@ -100,52 +136,66 @@ def tdcommercialbanking(soup, records):
     time = soup.find('label', attrs={'class': 'ng-binding'}).text
     text = 'Rates may change throughout the day and may differ at the time of booking.'
     print(headers[0].text + "   " + headers[1].text + "   " + headers[2].text + "        1 CAD = ?")
-    countries = ['USD', 'GBP', 'INR', 'MXN', 'PKR', 'PHP']
-    for row in data:
-        td = row.find_all('td')
-        if (td[0].text).strip() in countries:
-            try:
-                convert = str(1.0 / float(td[2].text))
-            except:
-                convert = None
-            #print(td[0].text + "   " + td[1].text + "   " + td[2].text + "  =============> " + convert)
-            add_to_database(records, 'img/web_logo/td1.jpg', 'Toronto Dominion Bank', td[0].text,
-                            '$40.00','3 to 4 business days', convert, time, text,
-                            'https://www.tdcommercialbanking.com/rates/index.jsp')
+    country_data = get_list(countries_list)
+    for i in country_data:
+        for row in data:
+            td = row.find_all('td')
+            if i['currency'] == td[0].text:
+                try:
+                    convert = str(1.0 / float(td[2].text))
+                except:
+                    convert = None
+
+                print('Toronto Dominion Bank',i['country_name'],  i['currency'],i['cur_sign'],
+                                '$40.00', '3 to 4 business days', convert, time, text,
+                                 'img/web_logo/td1.jpg', 'https://www.tdcommercialbanking.com/rates/index.jsp')
+
+                add_to_database(records,'Toronto Dominion Bank',i['country_name'],  i['currency'],i['cur_sign'],
+                                '$40.00', '3 to 4 business days', convert, time, text,
+                                 'img/web_logo/td1.jpg', 'https://www.tdcommercialbanking.com/rates/index.jsp')
 
 
-def hsbc(soup, records):
+
+def hsbc(soup, records, countries_list):
     table = soup.find('table', attrs={'class': 'hsbcTableStyleViewRates'})
     tr = table.find_all('tr')
     headers = tr[0]
     headers = headers.find_all('th')
     data = tr[1:]
     print(headers[0].text + "   " + headers[1].text + "   " + headers[2].text + "        1 CAD = ?")
-    currencies = ['USD', 'GBP', 'INR', 'MXN', 'PKR', 'PHP']
     time= soup.find('div', attrs={'class': 'hsbcTextStyle15'}).text
     text = 'Rates are subject to change without notice.'
-    for row in data:
-        td = row.find_all('td')
-        currency = td[1].text
-        if currency in currencies:
-            try:
-                convert = str(1.0 / float(td[2].text))
-            except:
-                convert = None
-            #print(td[0].text + "   " + td[1].text + "   " + td[2].text + "  =============> " + convert)
-            add_to_database(records,'img/web_logo/hsbc-logo.gif', 'HSBC Bank', currency,
-                            '$40.00', '3 to 4 business days', convert, time, text,
-                            'http://www.hsbc.ca/1/2/personal/banking/accounts/foreign-currency-accounts/foreign-currency-exchange')
+    country_data = get_list(countries_list)
+    print(len(data))
+    for i in country_data:
+        for row in data:
+            td = row.find_all('td')
+            if i['currency'] == td[1].text:
+                try:
+                    convert = str(1.0 / float(td[2].text))
+                except:
+                    convert = None
+
+                #print(td[0].text + "   " + td[1].text + "   " + td[2].text + "  =============> " + convert)
+                print('HSBC Bank',i['country_name'],  i['currency'],i['cur_sign'],
+                                '$40.00', '3 to 4 business days', convert, time, text,
+                                'img/web_logo/hsbc-logo.gif')
+
+                add_to_database(records, 'HSBC Bank',i['country_name'],  i['currency'],i['cur_sign'],
+                                '$40.00', '3 to 4 business days', convert, time, text,
+                                'img/web_logo/hsbc-logo.gif',
+                                'http://www.hsbc.ca/1/2/personal/banking/accounts/foreign-currency-accounts/foreign-currency-exchange')
 
 
 
-
-def add_to_database(records_col, bank_logo, bank_name, currency, transfer_fee, transfer_time, rate, time, text, web_link):
+def add_to_database(records_col, bank_name,country, currency, cur_sign,transfer_fee, transfer_time, rate, time, text,bank_logo, web_link):
     if records_col.find({'bank_name': bank_name, 'currency':currency}).count() == 0:
         print("Inserting")
         records_col.insert(
             {
                 'bank_logo': bank_logo,
+                'country': country,
+                'cur_sign': cur_sign,
                 'bank_name': bank_name,
                 'currency': currency,
                 'transfer_fee': transfer_fee,
@@ -163,6 +213,8 @@ def add_to_database(records_col, bank_logo, bank_name, currency, transfer_fee, t
             {
                 'bank_logo': bank_logo,
                 'bank_name': bank_name,
+                'country': country,
+                'cur_sign': cur_sign,
                 'currency': currency,
                 'transfer_fee': transfer_fee,
                 'transfer_time': transfer_time,
@@ -172,8 +224,6 @@ def add_to_database(records_col, bank_logo, bank_name, currency, transfer_fee, t
                 'web_link':web_link,
             }
         )
-
-
 
 
 def insert_all():
