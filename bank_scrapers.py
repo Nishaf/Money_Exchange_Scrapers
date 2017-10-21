@@ -189,7 +189,7 @@ def hsbc(soup, records, countries_list):
 
 
 def add_to_database(records_col, bank_name,country, currency, cur_sign,transfer_fee, transfer_time, rate, time, text,bank_logo, web_link):
-    if records_col.find({'bank_name': bank_name, 'currency':currency}).count() == 0:
+    if records_col.find({'bank_name': bank_name, 'country':country}).count() == 0:
         print("Inserting")
         records_col.insert(
             {
