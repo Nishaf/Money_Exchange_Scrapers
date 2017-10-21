@@ -52,9 +52,9 @@ def royal_bank(soup, records, countries_list):
             string += td[0].text + "   " + td[1].text + "   " + data1[
                 'cur_sign'] + "   " + value + "   ===============>  " + convert
 
-            print('Royal Bank', country, data1['currency'],
-                            data1['cur_sign'],'$40.00', '3 to 4 business days', convert, time, text,
-                                'img/web_logo/rbc_royalbank_en.png','http://www.rbcroyalbank.com/rates/rates/cashrates.html')
+            #print('Royal Bank', country, data1['currency'],
+            #                data1['cur_sign'],'$40.00', '3 to 4 business days', convert, time, text,
+            #                    'img/web_logo/rbc_royalbank_en.png','http://www.rbcroyalbank.com/rates/rates/cashrates.html')
             add_to_database(records, 'Royal Bank', country, data1['currency'],
                             data1['cur_sign'],'$40.00', '3 to 4 business days', convert, time, text,
                                 'img/web_logo/rbc_royalbank_en.png','http://www.rbcroyalbank.com/rates/rates/cashrates.html')
@@ -89,9 +89,9 @@ def bmo(soup, records, countries_list):
 
             data1 = countries_list.find_one({'country_name': country})
             string += td[0].text + "   " + td[1].text + "   " + td[3].text + "   ===============>  " + convert
-            print('Bank of Montreal',country,data1['currency'],data1['cur_sign'],
-                            '$40.00', '3 to 4 business days', convert, time, text,
-                            'img/web_logo/bmo1.jpg', 'https://www.bmo.com/home/personal/banking/rates/foreign-exchange')
+            #print('Bank of Montreal',country,data1['currency'],data1['cur_sign'],
+            #                '$40.00', '3 to 4 business days', convert, time, text,
+            #                'img/web_logo/bmo1.jpg', 'https://www.bmo.com/home/personal/banking/rates/foreign-exchange')
             add_to_database(records,'Bank of Montreal',country, data1['currency'],data1['cur_sign'],
                             '$40.00', '3 to 4 business days', convert, time, text,
                             'img/web_logo/bmo1.jpg', 'https://www.bmo.com/home/personal/banking/rates/foreign-exchange')
@@ -118,9 +118,9 @@ def scotia_bank(soup, records, countries_list):
                 convert = None
             #print(td[0].text + "   " + td[1].text + "   " + td[2].text + "  =============> " + convert)
             data1 = countries_list.find_one({'country_name': country})
-            print('Scotia Bank',country, data1['currency'],data1['cur_sign'],
-                '$40.00', '3 to 4 business days', convert, time, text,
-                'img/web_logo/scotiabank.jpg','http://www.scotiabank.com/ca/en/0,,1118,00.html')
+            #print('Scotia Bank',country, data1['currency'],data1['cur_sign'],
+            #    '$40.00', '3 to 4 business days', convert, time, text,
+            #    'img/web_logo/scotiabank.jpg','http://www.scotiabank.com/ca/en/0,,1118,00.html')
             add_to_database(records, 'Scotia Bank',country, data1['currency'],data1['cur_sign'],
                             '$40.00', '3 to 4 business days', convert, time, text,
                             'img/web_logo/scotiabank.jpg', 'http://www.scotiabank.com/ca/en/0,,1118,00.html')
@@ -146,9 +146,9 @@ def tdcommercialbanking(soup, records, countries_list):
                 except:
                     convert = None
 
-                print('Toronto Dominion Bank',i['country_name'],  i['currency'],i['cur_sign'],
-                                '$40.00', '3 to 4 business days', convert, time, text,
-                                 'img/web_logo/td1.jpg', 'https://www.tdcommercialbanking.com/rates/index.jsp')
+                #print('Toronto Dominion Bank',i['country_name'],  i['currency'],i['cur_sign'],
+                #                '$40.00', '3 to 4 business days', convert, time, text,
+                #                 'img/web_logo/td1.jpg', 'https://www.tdcommercialbanking.com/rates/index.jsp')
 
                 add_to_database(records,'Toronto Dominion Bank',i['country_name'],  i['currency'],i['cur_sign'],
                                 '$40.00', '3 to 4 business days', convert, time, text,
@@ -177,9 +177,9 @@ def hsbc(soup, records, countries_list):
                     convert = None
 
                 #print(td[0].text + "   " + td[1].text + "   " + td[2].text + "  =============> " + convert)
-                print('HSBC Bank',i['country_name'],  i['currency'],i['cur_sign'],
-                                '$40.00', '3 to 4 business days', convert, time, text,
-                                'img/web_logo/hsbc-logo.gif')
+                #print('HSBC Bank',i['country_name'],  i['currency'],i['cur_sign'],
+                #                '$40.00', '3 to 4 business days', convert, time, text,
+                #                'img/web_logo/hsbc-logo.gif')
 
                 add_to_database(records, 'HSBC Bank',i['country_name'],  i['currency'],i['cur_sign'],
                                 '$40.00', '3 to 4 business days', convert, time, text,
