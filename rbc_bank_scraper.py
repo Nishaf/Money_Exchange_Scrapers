@@ -16,7 +16,7 @@ class RoyalBank:
         self.rate_li = list()
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--no-sandbox')
-        self.driver = webdriver.Chrome('/home/Money_Exchange_Scrapers/chromedriver', chrome_options=chrome_options)#('/home/nishaf/chromedriver')#
+        self.driver = webdriver.Firefox(executable_path='/home/nishaf/geckodriver')#('/home/Money_Exchange_Scrapers/chromedriver', chrome_options=chrome_options)#
         mongo = MongoClient()
         self.db = mongo['transfer_rates']
         self.run()
@@ -98,7 +98,7 @@ class RoyalBank:
                                 'img/web_logo/rbc_royalbank_en.png',
                                 'http://www.rbcroyalbank.com/rates/rates/cashrates.html')
 
-
+RoyalBank()
 '''
 
 def get_country_list(self):
