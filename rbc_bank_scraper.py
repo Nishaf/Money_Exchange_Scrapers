@@ -36,14 +36,14 @@ class RoyalBank:
         textt = textt[textt.index("(") + 1:textt.rindex(")")]
         print(textt)
         rate = self.driver.find_element_by_xpath("//span[@id='noncash-currencyWantRate']").text
-        print(textt + " =====> " + rate + " ========> " + str(1.0 / float(rate)))
+        #print(textt + " =====> " + rate + " ========> " + str(1.0 / float(rate)))
         self.currency_li.append(textt)
         self.rate_li.append(str(1.0 / float(rate)))
         sleep(2)
 
 
     def get_rates_from_webpage(self):
-        self.driver.execute_script("return window.scrollBy(0,200);")
+        self.driver.execute_script("return window.scrollBy(0,300);")
         time_text = self.driver.find_element_by_xpath("//p[@class='pad-t-qtr text-center text-grey minor']").text
         statement = self.driver.find_element_by_xpath("//p[@class='pad-b-0 mob-pad-b-hlf text-center text-grey minor']").text
         sleep(2)
