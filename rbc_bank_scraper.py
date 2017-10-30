@@ -99,6 +99,7 @@ class RoyalBank:
                                 'http://www.rbcroyalbank.com/rates/rates/cashrates.html')
 
 
+
 '''
 
 def get_country_list(self):
