@@ -60,10 +60,12 @@ class RoyalBank:
                 elem[i].click()
             except:
                 try:
+                    print("2nd try")
                     sleep(2)
                     elem[i].click()
                 except:
-                    sleep(2)
+                    print("3rd try")
+                    sleep(4)
                     elem[i].click()
 
             sleep(3)
