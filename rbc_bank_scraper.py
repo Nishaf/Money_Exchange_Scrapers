@@ -66,7 +66,6 @@ class RoyalBank:
                 except:
                     self.driver.execute_script("arguments[0].click()", elem[i])
                     sleep(4)
-                    elem[i].click()
 
             sleep(3)
             self.insert_in_db()
