@@ -11,7 +11,7 @@ class RoyalBank:
     def __init__(self):
         self.url = "https://online.royalbank.com/cgi-bin/tools/foreign-exchange-calculator/start.cgi"
         self.display = Display(visible=0, size=(1500, 800))
-        self.display.start()
+        #self.display.start()
         self.currency_li = list()
         self.rate_li = list()
         chrome_options = webdriver.ChromeOptions()
@@ -52,6 +52,7 @@ class RoyalBank:
         self.driver.find_elements_by_xpath("//div[@class='currency-select ui fluid selection dropdown']")[1].click()
         element = self.driver.find_elements_by_xpath("//div[@class='input-wpr w-100']")
         print(len(element))
+        count = 0
         elem = element[1].find_elements_by_xpath("//div[@class='item']")
         for i in range(15, 43):
             sleep(4)
@@ -70,8 +71,11 @@ class RoyalBank:
             self.driver.find_elements_by_xpath("//div[@class='currency-select ui fluid selection dropdown']")[1].click()
             sleep(2)
             element = self.driver.find_elements_by_xpath("//div[@class='input-wpr w-100']")
+            element1 = self.driver.find_element_by_xpath("//div[@class='menu transition visible']")
+            self.driver.execute_script("return arguments[0].scrollBy(0,"+str(count+10)+");", element1)
             elem = element[1].find_elements_by_xpath("//div[@class='item']")
             sleep(2)
+            count += 10
 
         return time_text, statement
 
@@ -197,3 +201,5 @@ table = soup.find_all('table')
                                 'img/web_logo/rbc_royalbank_en.png','http://www.rbcroyalbank.com/rates/rates/cashrates.html')
             #print(string)
 '''
+
+RoyalBank()
