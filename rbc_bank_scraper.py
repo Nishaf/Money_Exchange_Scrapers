@@ -11,7 +11,7 @@ class RoyalBank:
     def __init__(self):
         self.url = "https://online.royalbank.com/cgi-bin/tools/foreign-exchange-calculator/start.cgi"
         self.display = Display(visible=0, size=(1500, 800))
-        #self.display.start()
+        self.display.start()
         self.currency_li = list()
         self.rate_li = list()
         chrome_options = webdriver.ChromeOptions()
