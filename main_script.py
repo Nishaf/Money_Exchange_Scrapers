@@ -1,3 +1,40 @@
+from rbc_bank_scraper import RoyalBank
+from bmo import BMO
+from scotia_bank_scraper import ScotiaBank
+from td_bank_scraper import TorontoDominionBank
+from hsbc_bank_scraper import HSBCBank
+from time import sleep
+from datetime import datetime
+
+
+if __name__ == "__main__":
+    time_break = 720
+    while True:
+        print("Starting Time: " + str(datetime.now()))
+
+        print("Scraping Royal Bank")
+        RoyalBank()
+
+        print("Scraping BMO")
+        BMO()
+
+        print("Scraping Scotia Bank")
+        ScotiaBank()
+
+        print("Scraping TD")
+        TorontoDominionBank()
+
+        print("Scraping HSBC")
+        HSBCBank()
+
+        print("Ending Time: " + str(datetime.now()))
+        print("Going to Sleep for " + str(time_break * 60) + ' seconds!!')
+        print("Going to Sleep")
+        sleep(int(time_break) * 60)
+
+
+
+"""
 from time import sleep
 from selenium import webdriver
 from bs4 import BeautifulSoup
@@ -5,10 +42,12 @@ from pyvirtualdisplay import Display
 from bank_scrapers import *
 from pymongo import MongoClient
 from datetime import datetime
+from rbc_bank_scraper import RoyalBank
+
 class Main_Scraper:
     def __init__(self):
         self.urls = [
-            'http://www.rbcroyalbank.com/rates/rates/cashrates.html',
+            'https://online.royalbank.com/cgi-bin/tools/foreign-exchange-calculator/start.cgi',
             'https://www.tdcommercialbanking.com/rates/index.jsp',
             'https://www.bmo.com/home/personal/banking/rates/foreign-exchange',
             'http://www.scotiabank.com/ca/en/0,,1118,00.html',
@@ -26,8 +65,8 @@ class Main_Scraper:
 
     def run_scraper(self, url, soup):
         if 'royalbank' in url:
-            royal_bank(soup, self.records,self.country_list)
-        elif 'tdcommercial' in url:
+            royal_bank(soup,self.records,self.country_list)
+        if 'tdcommercial' in url:
             tdcommercialbanking(soup, self.records, self.country_list)
         elif 'bmo' in   url:
             bmo(soup, self.records, self.country_list)
@@ -37,6 +76,7 @@ class Main_Scraper:
             hsbc(soup, self.records, self.country_list)
 
     def run(self):
+        RoyalBank()
         for i in self.urls:
             print('Scraping ====>  ' + i)
             self.driver.get(i)
@@ -57,21 +97,4 @@ if __name__ == '__main__':
         print("Ending Time: " + str(datetime.now()))
         print("Going to Sleep")
         sleep(int(time_break) * 60)
-
-
-
-
-'''
-try:
-    mongo = MongoClient('mongodb://45.56.221.44:27017')
-except:
-    print("connection refused")
-try:
-    db = mongo['transfer_rates']
-    item = db['records']
-
-    print(item.count())
-except:
-    print('db not available')
-'''
-
+"""
