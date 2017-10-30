@@ -201,5 +201,3 @@ table = soup.find_all('table')
                                 'img/web_logo/rbc_royalbank_en.png','http://www.rbcroyalbank.com/rates/rates/cashrates.html')
             #print(string)
 '''
-
-RoyalBank()
