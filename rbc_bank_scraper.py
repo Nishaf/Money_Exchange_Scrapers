@@ -98,7 +98,7 @@ class RoyalBank:
                                 'img/web_logo/rbc_royalbank_en.png',
                                 'http://www.rbcroyalbank.com/rates/rates/cashrates.html')
 
-RoyalBank()
+
 '''
 
 def get_country_list(self):
