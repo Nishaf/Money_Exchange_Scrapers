@@ -16,7 +16,7 @@ class RoyalBank:
         self.rate_li = list()
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--no-sandbox')
-        self.driver = webdriver.Firefox(executable_path='/home/nishaf/geckodriver')#('/home/Money_Exchange_Scrapers/chromedriver', chrome_options=chrome_options)#
+        self.driver = webdriver.Firefox(executable_path='/home/Money_Exchange_Scrapers/geckodriver')#('/home/Money_Exchange_Scrapers/chromedriver', chrome_options=chrome_options)#
         mongo = MongoClient()
         self.db = mongo['transfer_rates']
         self.run()
