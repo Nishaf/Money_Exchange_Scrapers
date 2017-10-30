@@ -64,7 +64,8 @@ class RoyalBank:
                     sleep(2)
                     elem[i].click()
                 except:
-                    print("3rd try")
+                    elem = element[1].find_elements_by_xpath("//div[@class='item']")
+                    print(elem[i].text)
                     sleep(4)
                     elem[i].click()
 
