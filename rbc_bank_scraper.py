@@ -11,12 +11,12 @@ class RoyalBank:
     def __init__(self):
         self.url = "https://online.royalbank.com/cgi-bin/tools/foreign-exchange-calculator/start.cgi"
         self.display = Display(visible=0, size=(1500, 800))
-        self.display.start()
+        #self.display.start()
         self.currency_li = list()
         self.rate_li = list()
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--no-sandbox')
-        self.driver = webdriver.Chrome('/home/Money_Exchange_Scrapers/chromedriver', chrome_options=chrome_options)#('/home/nishaf/chromedriver')#
+        self.driver = webdriver.Chrome('/home/nishaf/chromedriver')#('/home/Money_Exchange_Scrapers/chromedriver', chrome_options=chrome_options)#
         mongo = MongoClient()
         self.db = mongo['transfer_rates']
         self.run()
@@ -52,7 +52,7 @@ class RoyalBank:
         self.driver.find_elements_by_xpath("//div[@class='currency-select ui fluid selection dropdown']")[1].click()
         element = self.driver.find_elements_by_xpath("//div[@class='input-wpr w-100']")
         print(len(element))
-        count = 0
+        count = 10
         elem = element[1].find_elements_by_xpath("//div[@class='item']")
         for i in range(15, 43):
             sleep(4)
@@ -74,7 +74,7 @@ class RoyalBank:
             sleep(2)
             element = self.driver.find_elements_by_xpath("//div[@class='input-wpr w-100']")
             element1 = self.driver.find_element_by_xpath("//div[@class='menu transition visible']")
-            self.driver.execute_script("return arguments[0].scrollBy(0,"+str(count+10)+");", element1)
+            self.driver.execute_script("return arguments[0].scrollBy(0,"+str(count)+");", element1)
             elem = element[1].find_elements_by_xpath("//div[@class='item']")
             sleep(2)
             count += 10
@@ -98,55 +98,57 @@ class RoyalBank:
                                 'http://www.rbcroyalbank.com/rates/rates/cashrates.html')
 
 
-    '''
-    def get_country_list(self):
-        currencies = self.db.country_list.find()
-        country_list = []
-        for i in currencies:
-            country_list.append(i['country_name'])
-        return country_list
+RoyalBank()
+'''
 
-    def run(self):
-        self.driver.get(self.url)
-        soup = BeautifulSoup(self.driver.page_source)
-        table = soup.find_all('table')
-        tr = table[5].find_all('tr')
-        headers = tr[0]
-        headers = headers.find_all('td')
-        headers = [(i.text).strip() for i in headers]
-        print(headers[0] + "   " + headers[1] + "   " + headers[3] + "       1CAD = ?")
+def get_country_list(self):
+    currencies = self.db.country_list.find()
+    country_list = []
+    for i in currencies:
+        country_list.append(i['country_name'])
+    return country_list
 
-        data = tr[1:]
-        tr = table[4].find_all('tr')
-        td = tr[3].find('td', attrs={'valign': 'top'})
-        text = ((td.find('p')).text).strip()
-        text = text.replace('\n', ' ')
-        text = re.sub(' +', ' ', text)
-        text += "\n"
-        second_text = td.find('span', attrs={'class': 'disclaimer'})
-        text += (second_text.find('p').text).strip()
-        print(text)
-        country_list= self.get_country_list()
-        euro = data[1]
-        euro = euro.find_all('td')
-        for row in data:
-            td = row.find_all('td')
-            string = ""
-            country = td[0].text
-            if country in country_list:
-                if (td[3].text).strip() == 'Refer to Euro':
-                    value = euro[3].text
-                    convert = str(1.0/float(euro[3].text))
-                elif td[3].text != 'N/A':
-                    value = td[3].text
-                    convert = str(1.0 / float(td[3].text))
-                data1 = self.db.country_list.find_one({'country_name': country})
-                string += td[0].text + "   " + td[1].text + "   " + data1['cur_sign'] + "   " + value + "   ===============>  " + convert
-                #print(euro[3].text)
-                #print(country + "       " + data['cur_sign'] + value)
-                print(string)
+def run(self):
+    self.driver.get(self.url)
+    soup = BeautifulSoup(self.driver.page_source)
+    table = soup.find_all('table')
+    tr = table[5].find_all('tr')
+    headers = tr[0]
+    headers = headers.find_all('td')
+    headers = [(i.text).strip() for i in headers]
+    print(headers[0] + "   " + headers[1] + "   " + headers[3] + "       1CAD = ?")
 
-    '''
+    data = tr[1:]
+    tr = table[4].find_all('tr')
+    td = tr[3].find('td', attrs={'valign': 'top'})
+    text = ((td.find('p')).text).strip()
+    text = text.replace('\n', ' ')
+    text = re.sub(' +', ' ', text)
+    text += "\n"
+    second_text = td.find('span', attrs={'class': 'disclaimer'})
+    text += (second_text.find('p').text).strip()
+    print(text)
+    country_list= self.get_country_list()
+    euro = data[1]
+    euro = euro.find_all('td')
+    for row in data:
+        td = row.find_all('td')
+        string = ""
+        country = td[0].text
+        if country in country_list:
+            if (td[3].text).strip() == 'Refer to Euro':
+                value = euro[3].text
+                convert = str(1.0/float(euro[3].text))
+            elif td[3].text != 'N/A':
+                value = td[3].text
+                convert = str(1.0 / float(td[3].text))
+            data1 = self.db.country_list.find_one({'country_name': country})
+            string += td[0].text + "   " + td[1].text + "   " + data1['cur_sign'] + "   " + value + "   ===============>  " + convert
+            #print(euro[3].text)
+            #print(country + "       " + data['cur_sign'] + value)
+            print(string)
+
+'''
 doc = {
     # id = countryname,
     # currency = PKR or GBP etc.
