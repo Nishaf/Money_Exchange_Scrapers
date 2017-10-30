@@ -16,7 +16,7 @@ class RoyalBank:
         self.rate_li = list()
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--no-sandbox')
-        self.driver = webdriver.Firefox(executable_path='/home/Money_Exchange_Scrapers/geckodriver', capabilities=webdriver.DesiredCapabilities.FIREFOX )#('/home/Money_Exchange_Scrapers/chromedriver', chrome_options=chrome_options)#
+        self.driver = webdriver.Chrome('/home/Money_Exchange_Scrapers/chromedriver', chrome_options=chrome_options)#Chrome('/home/nishaf/chromedriver')#
         mongo = MongoClient()
         self.db = mongo['transfer_rates']
         self.run()
@@ -55,17 +55,16 @@ class RoyalBank:
         count = 10
         elem = element[1].find_elements_by_xpath("//div[@class='item']")
         for i in range(15, 43):
-            sleep(4)
+            sleep(3)
             try:
                 elem[i].click()
             except:
                 try:
                     print("2nd try")
                     sleep(2)
-                    elem[i].click()
+                    self.driver.execute_script("arguments[0].click()", elem[i])
                 except:
-                    elem = element[1].find_elements_by_xpath("//div[@class='item']")
-                    print(elem[i].text)
+                    self.driver.execute_script("arguments[0].click()", elem[i])
                     sleep(4)
                     elem[i].click()
 
@@ -97,7 +96,6 @@ class RoyalBank:
                                 entity['cur_sign'], '$40.00', '3 to 4 business days', rate, time, textt,
                                 'img/web_logo/rbc_royalbank_en.png',
                                 'http://www.rbcroyalbank.com/rates/rates/cashrates.html')
-
 
 
 '''
