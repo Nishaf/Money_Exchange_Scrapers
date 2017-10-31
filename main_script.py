@@ -8,7 +8,8 @@ from datetime import datetime
 
 
 if __name__ == "__main__":
-    time_break = 720
+    time_break = 360
+
     while True:
         print("Starting Time: " + str(datetime.now()))
 
