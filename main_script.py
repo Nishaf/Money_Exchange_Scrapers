@@ -6,8 +6,8 @@ from hsbc_bank_scraper import HSBCBank
 from time import sleep
 from datetime import datetime
 
-FROM_EMAIL = 'nishafnaeem3@gmail.com'
-FROM_EMAIL_PASS = 'Lapetitemorte11'
+FROM_EMAIL = ''
+FROM_EMAIL_PASS = ''
 
 def send_email(email, email_body='', email_subject=''):
     import smtplib
@@ -62,7 +62,7 @@ if __name__ == "__main__":
         HSBCBank()
 
         print("Ending Time: " + str(datetime.now()))
-        send_email("nishafnaeem3@gmail.com", email_body='All files Scraped at ' + str(datetime.now()), email_subject='FXRATEHUNTER')
+        #send_email("nishafnaeem3@gmail.com", email_body='All files Scraped at ' + str(datetime.now()), email_subject='FXRATEHUNTER')
         print("Going to Sleep for " + str(time_break * 60) + ' seconds!!')
         print("Going to Sleep")
         sleep(int(time_break) * 60)
