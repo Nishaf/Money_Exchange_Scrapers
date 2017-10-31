@@ -43,7 +43,6 @@ def send_email(email, email_body='', email_subject=''):
 
 if __name__ == "__main__":
     time_break = 360
-    #send_email("nishafnaeem3@gmail.com",email_body='Just checking', email_subject='Subject')
     while True:
         print("Starting Time: " + str(datetime.now()))
 
@@ -63,6 +62,7 @@ if __name__ == "__main__":
         HSBCBank()
 
         print("Ending Time: " + str(datetime.now()))
+        send_email("nishafnaeem3@gmail.com", email_body='All files Scraped at ' + str(datetime.now()), email_subject='FXRATEHUNTER')
         print("Going to Sleep for " + str(time_break * 60) + ' seconds!!')
         print("Going to Sleep")
         sleep(int(time_break) * 60)
