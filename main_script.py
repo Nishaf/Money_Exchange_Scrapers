@@ -6,10 +6,44 @@ from hsbc_bank_scraper import HSBCBank
 from time import sleep
 from datetime import datetime
 
+FROM_EMAIL = 'nishafnaeem3@gmail.com'
+FROM_EMAIL_PASS = 'Lapetitemorte11'
+
+def send_email(email, email_body='', email_subject=''):
+    import smtplib
+    from email.mime.text import MIMEText
+    from email.mime.multipart import MIMEMultipart
+
+    from_email = FROM_EMAIL
+    from_pass = FROM_EMAIL_PASS
+    msg = MIMEMultipart()
+    msg.attach(MIMEText(
+        email_body
+    ))
+    '''
+    if email_file_path is not None:
+        try:
+            file_path = email_file_path
+            part = MIMEBase('application', "octet-stream")
+            part.set_payload(open(file_path, "rb").read())
+            encoders.encode_base64(part)
+            part.add_header('Content-Disposition', 'attachment; filename="' + file_path.split('/')[-1] + '"')
+            msg.attach(part)
+        except:
+            print('File not found !!!')
+    '''
+    msg['Subject'] = email_subject
+    mail = smtplib.SMTP('smtp.gmail.com', 587)
+    mail.starttls()
+    mail.ehlo()
+    mail.login(from_email, from_pass)
+    mail.sendmail(from_email, email, msg.as_string())
+    mail.quit()
+
 
 if __name__ == "__main__":
     time_break = 360
-
+    #send_email("nishafnaeem3@gmail.com",email_body='Just checking', email_subject='Subject')
     while True:
         print("Starting Time: " + str(datetime.now()))
 
@@ -32,8 +66,6 @@ if __name__ == "__main__":
         print("Going to Sleep for " + str(time_break * 60) + ' seconds!!')
         print("Going to Sleep")
         sleep(int(time_break) * 60)
-
-
 
 """
 from time import sleep

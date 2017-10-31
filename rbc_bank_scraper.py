@@ -44,9 +44,9 @@ class RoyalBank:
 
     def get_rates_from_webpage(self):
         self.driver.execute_script("return window.scrollBy(0,300);")
+        sleep(2)
         time_text = self.driver.find_element_by_xpath("//p[@class='pad-t-qtr text-center text-grey minor']").text
         statement = self.driver.find_element_by_xpath("//p[@class='pad-b-0 mob-pad-b-hlf text-center text-grey minor']").text
-        sleep(2)
         self.cur_list = self.get_currency()
         self.insert_in_db()
         self.driver.find_elements_by_xpath("//div[@class='currency-select ui fluid selection dropdown']")[1].click()
