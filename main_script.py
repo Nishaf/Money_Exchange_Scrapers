@@ -5,15 +5,15 @@ from td_bank_scraper import TorontoDominionBank
 from hsbc_bank_scraper import HSBCBank
 from time import sleep
 from datetime import datetime
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
-FROM_EMAIL = ''
-FROM_EMAIL_PASS = ''
+
+FROM_EMAIL = 'fake20337@gmail.com'
+FROM_EMAIL_PASS = 'Winter!@#'
 
 def send_email(email, email_body='', email_subject=''):
-    import smtplib
-    from email.mime.text import MIMEText
-    from email.mime.multipart import MIMEMultipart
-
     from_email = FROM_EMAIL
     from_pass = FROM_EMAIL_PASS
     msg = MIMEMultipart()
@@ -43,6 +43,7 @@ def send_email(email, email_body='', email_subject=''):
 
 if __name__ == "__main__":
     time_break = 360
+
     while True:
         print("Starting Time: " + str(datetime.now()))
 
@@ -62,7 +63,9 @@ if __name__ == "__main__":
         HSBCBank()
 
         print("Ending Time: " + str(datetime.now()))
-        #send_email("nishafnaeem3@gmail.com", email_body='All files Scraped at ' + str(datetime.now()), email_subject='FXRATEHUNTER')
+        send_email("hkamboe@gmail.com" + "bsef14a531@pucit.edu.pk", email_body='All files Scraped at ' + str(datetime.now()),
+                   email_subject='FXRATEHUNTER_SCRAPERS_INFO')
+
         print("Going to Sleep for " + str(time_break * 60) + ' seconds!!')
         print("Going to Sleep")
         sleep(int(time_break) * 60)
