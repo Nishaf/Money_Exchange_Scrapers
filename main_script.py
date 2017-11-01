@@ -63,6 +63,7 @@ if __name__ == "__main__":
         HSBCBank()
 
         print("Ending Time: " + str(datetime.now()))
+
         send_email("hkamboe@gmail.com" + "bsef14a531@pucit.edu.pk", email_body='All files Scraped at ' + str(datetime.now()),
                    email_subject='FXRATEHUNTER_SCRAPERS_INFO')
 
