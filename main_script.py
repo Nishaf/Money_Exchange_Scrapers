@@ -43,33 +43,54 @@ def send_email(email, email_body='', email_subject=''):
 
 if __name__ == "__main__":
     time_break = 360
-
+    mail_subject = ""
     while True:
-        print("Starting Time: " + str(datetime.now()))
-
         print("Scraping Royal Bank")
-        RoyalBank()
+        try:
+            RoyalBank()
+            mail_subject += "Royal Bank successfully scraped!"
+        except Exception as e:
+            mail_subject += "Error Occured during scraping.\n Error is: " + str(e)
 
-        print("Scraping BMO")
-        BMO()
+        try:
+            print("Scraping BMO")
+            BMO()
+            mail_subject += "BMO successfully scraped!"
+        except Exception as e:
+            mail_subject += "Error Occured during BMO scraping.\n Error is: " + str(e)
 
-        print("Scraping Scotia Bank")
-        ScotiaBank()
+        try:
+            print("Scraping Scotia Bank")
+            ScotiaBank()
+            mail_subject += "Scotia Bank successfully scraped!"
+        except Exception as e:
+            mail_subject += "Error Occured during Scotia Bank scraping.\n Error is: " + str(e)
 
-        print("Scraping TD")
-        TorontoDominionBank()
+        try:
+            print("Scraping TD")
+            TorontoDominionBank()
+            mail_subject += "TD Bank successfully scraped!"
+        except Exception as e:
+            mail_subject += "Error Occured during TD scraping.\n Error is: " + str(e)
 
-        print("Scraping HSBC")
-        HSBCBank()
+        try:
+            print("Scraping HSBC")
+            HSBCBank()
+            mail_subject += "HSBC successfully scraped!"
+        except Exception as e:
+            mail_subject += "Error Occured during HSBC scraping.\n Error is: " + str(e)
 
-        print("Ending Time: " + str(datetime.now()))
+        mail_subject += "Completed at " + str(datetime.now())
 
-        send_email("hkamboe@gmail.com" + "bsef14a531@pucit.edu.pk", email_body='All files Scraped at ' + str(datetime.now()),
+        send_email(["hkamboe@gmail.com", "bsef14a531@pucit.edu.pk"],
+                   email_body=mail_subject,
                    email_subject='FXRATEHUNTER_SCRAPERS_INFO')
 
         print("Going to Sleep for " + str(time_break * 60) + ' seconds!!')
         print("Going to Sleep")
         sleep(int(time_break) * 60)
+
+
 
 """
 from time import sleep
