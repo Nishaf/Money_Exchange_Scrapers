@@ -26,6 +26,20 @@ class BMO:
             country_list.append(i['country_name'])
         return country_list
 
+    def check_date(self, time):
+        mongo = MongoClient()
+        db = mongo['transfer_rates']
+        items = db['records']
+
+        item = items.find({'time': time}).count()
+        mongo.close()
+        if item > 0:
+            self.update = False
+            return True
+        else:
+            self.update = True
+            return False
+
     def run(self):
         self.driver.get(self.url)
         soup = BeautifulSoup(self.driver.page_source)
@@ -37,8 +51,10 @@ class BMO:
         print(headers[0] + "   " + headers[1] + "   " + headers[3] + "       1CAD = ?")
         time = soup.find('p', attrs={'class': 'first bold'})
         time.find('script').replaceWith('')
-        time = time.text
+        time = (time.text).strip()
 
+        if self.check_date(time):
+            return
         text = "Foreign exchange rates are subject to change at any time."
         data = tr[1:]
         country_list = self.get_country_list()

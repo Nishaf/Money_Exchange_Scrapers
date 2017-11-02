@@ -18,6 +18,20 @@ class TorontoDominionBank:
         self.driver.close()
         mongo.close()
 
+    def check_date(self, time):
+        mongo = MongoClient()
+        db = mongo['transfer_rates']
+        items = db['records']
+
+        item = items.find({'time': time}).count()
+        mongo.close()
+        if item > 0:
+            self.update = False
+            return True
+        else:
+            self.update = True
+            return False
+
     def run(self):
         self.driver.get(self.url)
         soup = BeautifulSoup(self.driver.page_source)
@@ -27,7 +41,11 @@ class TorontoDominionBank:
         headers = tr[0]
         headers = headers.find_all('th')
         data = tr[1:]
-        time = soup.find('label', attrs={'class': 'ng-binding'}).text
+        time = (soup.find('label', attrs={'class': 'ng-binding'}).text).strip()
+
+        if self.check_date(time):
+            return
+
         text = 'Rates may change throughout the day and may differ at the time of booking.'
         print(headers[0].text + "   " + headers[1].text + "   " + headers[2].text + "        1 CAD = ?")
         country_data = self.db.country_list.find()

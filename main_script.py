@@ -42,53 +42,68 @@ def send_email(email, email_body='', email_subject=''):
 
 
 if __name__ == "__main__":
-    time_break = 360
+    BREAK_TIME = 30                         # IN MINUTES
     mail_subject = ""
     while True:
         print("Scraping Royal Bank")
         try:
-            RoyalBank()
-            mail_subject += "Royal Bank successfully scraped!"
+            a = RoyalBank()
+            if not a.update:
+                mail_subject += 'Not Updated.\n'
+            else:
+                mail_subject += "Royal Bank successfully scraped!\n"
         except Exception as e:
-            mail_subject += "Error Occured during scraping.\n Error is: " + str(e)
+            mail_subject += "Error Occured during scraping.\n Error is: " + str(e) + "\n"
 
         try:
             print("Scraping BMO")
-            BMO()
-            mail_subject += "BMO successfully scraped!"
+            a = BMO()
+            if not a.update:
+                mail_subject += 'Not Updated.\n'
+            else:
+                mail_subject += "BMO successfully scraped!\n"
         except Exception as e:
-            mail_subject += "Error Occured during BMO scraping.\n Error is: " + str(e)
+            mail_subject += "Error Occured during BMO scraping.\n Error is: " + str(e) +"\n"
 
         try:
             print("Scraping Scotia Bank")
-            ScotiaBank()
-            mail_subject += "Scotia Bank successfully scraped!"
+            a = ScotiaBank()
+            if not a.update:
+                mail_subject += 'Not Updated.\n'
+            else:
+                mail_subject += "Scotia Bank successfully scraped!\n"
         except Exception as e:
-            mail_subject += "Error Occured during Scotia Bank scraping.\n Error is: " + str(e)
+            mail_subject += "Error Occured during Scotia Bank scraping.\n Error is: " + str(e) + "\n"
 
         try:
             print("Scraping TD")
-            TorontoDominionBank()
-            mail_subject += "TD Bank successfully scraped!"
+            a = TorontoDominionBank()
+            if not a.update:
+                mail_subject += 'Not Updated.\n'
+            else:
+                mail_subject += "TD Bank successfully scraped!\n"
         except Exception as e:
-            mail_subject += "Error Occured during TD scraping.\n Error is: " + str(e)
+            mail_subject += "Error Occured during TD scraping.\n Error is: " + str(e) +"\n"
 
         try:
             print("Scraping HSBC")
-            HSBCBank()
-            mail_subject += "HSBC successfully scraped!"
+            a = HSBCBank()
+            if not a.update:
+                mail_subject += 'Not Updated.\n'
+            else:
+                mail_subject += "HSBC successfully scraped!\n"
         except Exception as e:
-            mail_subject += "Error Occured during HSBC scraping.\n Error is: " + str(e)
+            mail_subject += "Error Occured during HSBC scraping.\n Error is: " + str(e) + "\n"
 
         mail_subject += "Completed at " + str(datetime.now())
 
-        send_email(["hkamboe@gmail.com", "bsef14a531@pucit.edu.pk"],
+        send_email(["bsef14a531@pucit.edu.pk"],
                    email_body=mail_subject,
                    email_subject='FXRATEHUNTER_SCRAPERS_INFO')
 
-        print("Going to Sleep for " + str(time_break * 60) + ' seconds!!')
+        print("Going to Sleep for " + str(BREAK_TIME * 60) + ' seconds!!')
         print("Going to Sleep")
-        sleep(int(time_break) * 60)
+        sleep(int(BREAK_TIME) * 60)
 
 
 

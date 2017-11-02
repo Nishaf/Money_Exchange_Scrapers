@@ -23,6 +23,21 @@ class ScotiaBank:
         for i in currencies:
             country_list.append(i['country_name'])
         return country_list
+
+    def check_date(self, time):
+        mongo = MongoClient()
+        db = mongo['transfer_rates']
+        items = db['records']
+
+        item = items.find({'time': time}).count()
+        mongo.close()
+        if item > 0:
+            self.update = False
+            return True
+        else:
+            self.update = True
+            return False
+
     def run(self):
         self.driver.get(self.url)
         soup = BeautifulSoup(self.driver.page_source)
@@ -33,7 +48,11 @@ class ScotiaBank:
         headers = headers.find_all('td')
         data = tr[1:]
         print(headers[0].text + "   " + headers[1].text + "   " + headers[2].text + "        1 CAD = ?")
-        time = soup.find('li', attrs={'class': 'effective-date'}).text
+        time = (soup.find('li', attrs={'class': 'effective-date'}).text).strip()
+
+        if self.check_date(time):
+            return
+
         text = 'Rates are provided for information purposes only and are subject to change at any time.'
         country_list = self.get_country_list()
         for row in data:

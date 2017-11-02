@@ -16,7 +16,7 @@ class RoyalBank:
         self.rate_li = list()
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--no-sandbox')
-        self.driver = webdriver.Chrome('/home/Money_Exchange_Scrapers/chromedriver', chrome_options=chrome_options)#Chrome('/home/nishaf/chromedriver')#
+        self.driver = webdriver.Chrome('/home/Money_Exchange_Scrapers/chromedriver', chrome_options=chrome_options)#('/home/nishaf/chromedriver')#
         mongo = MongoClient()
         self.db = mongo['transfer_rates']
         self.run()
@@ -42,10 +42,23 @@ class RoyalBank:
         sleep(2)
 
 
+    def check_date(self, time):
+        mongo = MongoClient()
+        db = mongo['transfer_rates']
+        items = db['records']
+
+        item = items.find({'time': time}).count()
+        mongo.close()
+        if item > 0:
+            self.update = False
+            return True
+        else:
+            self.update = True
+            return False
+
     def get_rates_from_webpage(self):
         self.driver.execute_script("return window.scrollBy(0,300);")
-        sleep(2)
-        time_text = self.driver.find_element_by_xpath("//p[@class='pad-t-qtr text-center text-grey minor']").text
+        time_text = (self.driver.find_element_by_xpath("//p[@class='pad-t-qtr text-center text-grey minor']").text).strip()
         statement = self.driver.find_element_by_xpath("//p[@class='pad-b-0 mob-pad-b-hlf text-center text-grey minor']").text
         self.cur_list = self.get_currency()
         self.insert_in_db()
@@ -82,8 +95,13 @@ class RoyalBank:
 
     def run(self):
         self.driver.get(self.url)
-        time, textt = self.get_rates_from_webpage()
+        sleep(2)
+        time_text = (self.driver.find_element_by_xpath("//p[@class='pad-t-qtr text-center text-grey minor']").text).strip()
 
+        if self.check_date(time_text):
+            return
+
+        time, textt = self.get_rates_from_webpage()
         country_list = self.db.country_list.find()
         for entity in country_list:
             if entity['currency'] in self.currency_li:
@@ -97,6 +115,7 @@ class RoyalBank:
                                 'http://www.rbcroyalbank.com/rates/rates/cashrates.html')
 
 
+RoyalBank()
 '''
 
 def get_country_list(self):
