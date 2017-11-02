@@ -49,7 +49,7 @@ if __name__ == "__main__":
         try:
             a = RoyalBank()
             if not a.update:
-                mail_subject += 'Not Updated.\n'
+                mail_subject += 'Royal Bank Not Updated.\n'
             else:
                 mail_subject += "Royal Bank successfully scraped!\n"
         except Exception as e:
@@ -59,7 +59,7 @@ if __name__ == "__main__":
             print("Scraping BMO")
             a = BMO()
             if not a.update:
-                mail_subject += 'Not Updated.\n'
+                mail_subject += 'BMO Not Updated.\n'
             else:
                 mail_subject += "BMO successfully scraped!\n"
         except Exception as e:
@@ -69,7 +69,7 @@ if __name__ == "__main__":
             print("Scraping Scotia Bank")
             a = ScotiaBank()
             if not a.update:
-                mail_subject += 'Not Updated.\n'
+                mail_subject += 'Scotia Bank Not Updated.\n'
             else:
                 mail_subject += "Scotia Bank successfully scraped!\n"
         except Exception as e:
@@ -79,7 +79,7 @@ if __name__ == "__main__":
             print("Scraping TD")
             a = TorontoDominionBank()
             if not a.update:
-                mail_subject += 'Not Updated.\n'
+                mail_subject += 'TD Not Updated.\n'
             else:
                 mail_subject += "TD Bank successfully scraped!\n"
         except Exception as e:
@@ -89,7 +89,7 @@ if __name__ == "__main__":
             print("Scraping HSBC")
             a = HSBCBank()
             if not a.update:
-                mail_subject += 'Not Updated.\n'
+                mail_subject += 'HSBC Not Updated.\n'
             else:
                 mail_subject += "HSBC successfully scraped!\n"
         except Exception as e:
