@@ -122,11 +122,11 @@ class RoyalBank:
                     add_to_database(self.db.records, 'Royal Bank', entity['country_name'], entity['currency'],
                                     entity['cur_sign'], '$40.00', '3 to 4 business days', rate, time, textt,
                                     'img/web_logo/rbc_royalbank_en.png',
-                                    'http://www.rbcroyalbank.com/rates/rates/cashrates.html')
+                                    'https://online.royalbank.com/cgi-bin/tools/foreign-exchange-calculator/start.cgi')
         except Exception as e:
             print(e)
             self.driver.stop_client()
-            self.driver.close()
+            self.driver.quit()
 '''
 
 def get_country_list(self):

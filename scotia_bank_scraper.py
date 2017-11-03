@@ -43,6 +43,7 @@ class ScotiaBank:
         try:
             self.driver.get(self.url)
             soup = BeautifulSoup(self.driver.page_source)
+            
             time = (soup.find('li', attrs={'class': 'effective-date'}).text).strip()
 
             if self.check_date(time):
