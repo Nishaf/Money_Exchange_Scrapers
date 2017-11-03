@@ -48,7 +48,7 @@ if __name__ == "__main__":
         print("Scraping Royal Bank")
         try:
             a = RoyalBank()
-            if not a.update:
+            if a.up_to_date:
                 mail_subject += 'Royal Bank Not Updated.\n'
             else:
                 mail_subject += "Royal Bank successfully scraped!\n"
@@ -58,7 +58,7 @@ if __name__ == "__main__":
         try:
             print("Scraping BMO")
             a = BMO()
-            if not a.update:
+            if a.up_to_date:
                 mail_subject += 'BMO Not Updated.\n'
             else:
                 mail_subject += "BMO successfully scraped!\n"
@@ -68,7 +68,7 @@ if __name__ == "__main__":
         try:
             print("Scraping Scotia Bank")
             a = ScotiaBank()
-            if not a.update:
+            if a.up_to_date:
                 mail_subject += 'Scotia Bank Not Updated.\n'
             else:
                 mail_subject += "Scotia Bank successfully scraped!\n"
@@ -78,7 +78,7 @@ if __name__ == "__main__":
         try:
             print("Scraping TD")
             a = TorontoDominionBank()
-            if not a.update:
+            if a.up_to_date:
                 mail_subject += 'TD Not Updated.\n'
             else:
                 mail_subject += "TD Bank successfully scraped!\n"
@@ -88,7 +88,7 @@ if __name__ == "__main__":
         try:
             print("Scraping HSBC")
             a = HSBCBank()
-            if not a.update:
+            if a.up_to_date:
                 mail_subject += 'HSBC Not Updated.\n'
             else:
                 mail_subject += "HSBC successfully scraped!\n"
@@ -97,7 +97,7 @@ if __name__ == "__main__":
 
         mail_subject += "Completed at " + str(datetime.now())
 
-        send_email(["hkamboe@gmail.com","bsef14a531@pucit.edu.pk"],
+        send_email(["bsef14a531@pucit.edu.pk"],
                    email_body=mail_subject,
                    email_subject='FXRATEHUNTER_SCRAPERS_INFO')
 

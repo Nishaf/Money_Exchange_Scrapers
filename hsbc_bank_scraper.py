@@ -27,49 +27,52 @@ class HSBCBank:
         item = items.find({'time': time}).count()
         mongo.close()
         if item > 0:
-            self.update = False
+            self.up_to_date = True
             return True
         else:
-            self.update = True
+            self.up_to_date = False
             return False
 
     def run(self):
-        self.driver.get(self.url)
-        soup = BeautifulSoup(self.driver.page_source)
+        try:
+            self.driver.get(self.url)
+            soup = BeautifulSoup(self.driver.page_source)
 
-        table = soup.find('table', attrs={'class': 'hsbcTableStyleViewRates'})
-        tr = table.find_all('tr')
-        headers = tr[0]
-        headers = headers.find_all('th')
-        data = tr[1:]
-        print(headers[0].text + "   " + headers[1].text + "   " + headers[2].text + "        1 CAD = ?")
-        time = (soup.find('div', attrs={'class': 'hsbcTextStyle15'}).text).strip()
+            table = soup.find('table', attrs={'class': 'hsbcTableStyleViewRates'})
+            tr = table.find_all('tr')
+            headers = tr[0]
+            headers = headers.find_all('th')
+            data = tr[1:]
+            print(headers[0].text + "   " + headers[1].text + "   " + headers[2].text + "        1 CAD = ?")
+            time = (soup.find('div', attrs={'class': 'hsbcTextStyle15'}).text).strip()
 
-        if self.check_date(time):
-            return
+            if self.check_date(time):
+                return
 
-        text = 'Rates are subject to change without notice.'
-        country_data = self.db.country_list.find()
-        print(len(data))
-        for i in country_data:
-            for row in data:
-                td = row.find_all('td')
-                if i['currency'] == td[1].text:
-                    try:
-                        convert = str(1.0 / float(td[2].text))
-                    except:
-                        convert = None
+            text = 'Rates are subject to change without notice.'
+            country_data = self.db.country_list.find()
+            print(len(data))
+            for i in country_data:
+                for row in data:
+                    td = row.find_all('td')
+                    if i['currency'] == td[1].text:
+                        try:
+                            convert = str(1.0 / float(td[2].text))
+                        except:
+                            convert = None
 
-                    # print(td[0].text + "   " + td[1].text + "   " + td[2].text + "  =============> " + convert)
-                    # print('HSBC Bank',i['country_name'],  i['currency'],i['cur_sign'],
-                    #                '$40.00', '3 to 4 business days', convert, time, text,
-                    #                'img/web_logo/hsbc-logo.gif')
+                        # print(td[0].text + "   " + td[1].text + "   " + td[2].text + "  =============> " + convert)
+                        # print('HSBC Bank',i['country_name'],  i['currency'],i['cur_sign'],
+                        #                '$40.00', '3 to 4 business days', convert, time, text,
+                        #                'img/web_logo/hsbc-logo.gif')
 
-                    add_to_database(self.db.records, 'HSBC Bank', i['country_name'], i['currency'], i['cur_sign'],
-                                    '$40.00', '3 to 4 business days', convert, time, text,
-                                    'img/web_logo/hsbc-logo.gif',
-                                    'http://www.hsbc.ca/1/2/personal/banking/accounts/foreign-currency-accounts/foreign-currency-exchange')
-
+                        add_to_database(self.db.records, 'HSBC Bank', i['country_name'], i['currency'], i['cur_sign'],
+                                        '$40.00', '3 to 4 business days', convert, time, text,
+                                        'img/web_logo/hsbc-logo.gif',
+                                        'http://www.hsbc.ca/1/2/personal/banking/accounts/foreign-currency-accounts/foreign-currency-exchange')
+        except Exception as e:
+            print(e)
+            self.driver.close()
     '''
     table = soup.find('table', attrs={'class': 'hsbcTableStyleViewRates'})
         tr = table.find_all('tr')

@@ -50,70 +50,77 @@ class RoyalBank:
         item = items.find({'time': time}).count()
         mongo.close()
         if item > 0:
-            self.update = False
+            self.up_to_date = True
             return True
         else:
-            self.update = True
+            self.up_to_date = False
             return False
 
     def get_rates_from_webpage(self):
-        self.driver.execute_script("return window.scrollBy(0,300);")
-        time_text = (self.driver.find_element_by_xpath("//p[@class='pad-t-qtr text-center text-grey minor']").text).strip()
-        statement = self.driver.find_element_by_xpath("//p[@class='pad-b-0 mob-pad-b-hlf text-center text-grey minor']").text
-        self.cur_list = self.get_currency()
-        self.insert_in_db()
-        self.driver.find_elements_by_xpath("//div[@class='currency-select ui fluid selection dropdown']")[1].click()
-        element = self.driver.find_elements_by_xpath("//div[@class='input-wpr w-100']")
-        print(len(element))
-        count = 10
-        elem = element[1].find_elements_by_xpath("//div[@class='item']")
-        for i in range(15, 43):
-            sleep(3)
-            try:
-                elem[i].click()
-            except:
-                try:
-                    print("2nd try")
-                    sleep(2)
-                    self.driver.execute_script("arguments[0].click()", elem[i])
-                except:
-                    self.driver.execute_script("arguments[0].click()", elem[i])
-                    sleep(4)
-
-            sleep(3)
+        try:
+            self.driver.execute_script("return window.scrollBy(0,300);")
+            time_text = (self.driver.find_element_by_xpath("//p[@class='pad-t-qtr text-center text-grey minor']").text).strip()
+            statement = self.driver.find_element_by_xpath("//p[@class='pad-b-0 mob-pad-b-hlf text-center text-grey minor']").text
+            self.cur_list = self.get_currency()
             self.insert_in_db()
             self.driver.find_elements_by_xpath("//div[@class='currency-select ui fluid selection dropdown']")[1].click()
-            sleep(2)
             element = self.driver.find_elements_by_xpath("//div[@class='input-wpr w-100']")
-            element1 = self.driver.find_element_by_xpath("//div[@class='menu transition visible']")
-            self.driver.execute_script("return arguments[0].scrollBy(0,"+str(count)+");", element1)
+            print(len(element))
+            count = 10
             elem = element[1].find_elements_by_xpath("//div[@class='item']")
-            sleep(2)
-            count += 10
+            for i in range(15, 43):
+                sleep(3)
+                try:
+                    elem[i].click()
+                except:
+                    try:
+                        print("2nd try")
+                        sleep(2)
+                        self.driver.execute_script("arguments[0].click()", elem[i])
+                    except:
+                        self.driver.execute_script("arguments[0].click()", elem[i])
+                        sleep(4)
 
-        return time_text, statement
+                sleep(3)
+                self.insert_in_db()
+                self.driver.find_elements_by_xpath("//div[@class='currency-select ui fluid selection dropdown']")[1].click()
+                sleep(2)
+                element = self.driver.find_elements_by_xpath("//div[@class='input-wpr w-100']")
+                element1 = self.driver.find_element_by_xpath("//div[@class='menu transition visible']")
+                self.driver.execute_script("return arguments[0].scrollBy(0,"+str(count)+");", element1)
+                elem = element[1].find_elements_by_xpath("//div[@class='item']")
+                sleep(2)
+                count += 10
 
+            return time_text, statement
+
+        except Exception as e:
+            print(e)
+            self.driver.close()
     def run(self):
-        self.driver.get(self.url)
-        sleep(2)
-        time_text = (self.driver.find_element_by_xpath("//p[@class='pad-t-qtr text-center text-grey minor']").text).strip()
+        try:
+            self.driver.get(self.url)
+            sleep(2)
+            time_text = (self.driver.find_element_by_xpath("//p[@class='pad-t-qtr text-center text-grey minor']").text).strip()
 
-        if self.check_date(time_text):
-            return
+            if self.check_date(time_text):
+                return
 
-        time, textt = self.get_rates_from_webpage()
-        country_list = self.db.country_list.find()
-        for entity in country_list:
-            if entity['currency'] in self.currency_li:
-                index = self.currency_li.index(entity['currency'])
-                rate = self.rate_li[index]
-                print(self.currency_li[index] + " =====> " + rate)
+            time, textt = self.get_rates_from_webpage()
+            country_list = self.db.country_list.find()
+            for entity in country_list:
+                if entity['currency'] in self.currency_li:
+                    index = self.currency_li.index(entity['currency'])
+                    rate = self.rate_li[index]
+                    print(self.currency_li[index] + " =====> " + rate)
 
-                add_to_database(self.db.records, 'Royal Bank', entity['country_name'], entity['currency'],
-                                entity['cur_sign'], '$40.00', '3 to 4 business days', rate, time, textt,
-                                'img/web_logo/rbc_royalbank_en.png',
-                                'http://www.rbcroyalbank.com/rates/rates/cashrates.html')
-
+                    add_to_database(self.db.records, 'Royal Bank', entity['country_name'], entity['currency'],
+                                    entity['cur_sign'], '$40.00', '3 to 4 business days', rate, time, textt,
+                                    'img/web_logo/rbc_royalbank_en.png',
+                                    'http://www.rbcroyalbank.com/rates/rates/cashrates.html')
+        except Exception as e:
+            print(e)
+            self.driver.close()
 
 RoyalBank()
 '''

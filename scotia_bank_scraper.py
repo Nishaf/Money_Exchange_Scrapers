@@ -32,46 +32,49 @@ class ScotiaBank:
         item = items.find({'time': time}).count()
         mongo.close()
         if item > 0:
-            self.update = False
+            self.up_to_date = True
             return True
         else:
-            self.update = True
+            self.up_to_date = False
             return False
 
     def run(self):
-        self.driver.get(self.url)
-        soup = BeautifulSoup(self.driver.page_source)
+        try:
+            self.driver.get(self.url)
+            soup = BeautifulSoup(self.driver.page_source)
 
-        table = soup.find('table', attrs={'class': 'rates'})
-        tr = table.find_all('tr')
-        headers = tr[0]
-        headers = headers.find_all('td')
-        data = tr[1:]
-        print(headers[0].text + "   " + headers[1].text + "   " + headers[2].text + "        1 CAD = ?")
-        time = (soup.find('li', attrs={'class': 'effective-date'}).text).strip()
+            table = soup.find('table', attrs={'class': 'rates'})
+            tr = table.find_all('tr')
+            headers = tr[0]
+            headers = headers.find_all('td')
+            data = tr[1:]
+            print(headers[0].text + "   " + headers[1].text + "   " + headers[2].text + "        1 CAD = ?")
+            time = (soup.find('li', attrs={'class': 'effective-date'}).text).strip()
 
-        if self.check_date(time):
-            return
+            if self.check_date(time):
+                return
 
-        text = 'Rates are provided for information purposes only and are subject to change at any time.'
-        country_list = self.get_country_list()
-        for row in data:
-            td = row.find_all('td')
-            country = td[0].text
-            if country in country_list:
-                try:
-                    convert = str(1.0 / float(td[2].text))
-                except:
-                    convert = None
-                # print(td[0].text + "   " + td[1].text + "   " + td[2].text + "  =============> " + convert)
-                data1 = self.db.country_list.find_one({'country_name': country})
-                # print('Scotia Bank',country, data1['currency'],data1['cur_sign'],
-                #    '$40.00', '3 to 4 business days', convert, time, text,
-                #    'img/web_logo/scotiabank.jpg','http://www.scotiabank.com/ca/en/0,,1118,00.html')
-                add_to_database(self.db.records, 'Scotia Bank', country, data1['currency'], data1['cur_sign'],
-                                '$40.00', '3 to 4 business days', convert, time, text,
-                                'img/web_logo/scotiabank.jpg', 'http://www.scotiabank.com/ca/en/0,,1118,00.html')
-
+            text = 'Rates are provided for information purposes only and are subject to change at any time.'
+            country_list = self.get_country_list()
+            for row in data:
+                td = row.find_all('td')
+                country = td[0].text
+                if country in country_list:
+                    try:
+                        convert = str(1.0 / float(td[2].text))
+                    except:
+                        convert = None
+                    # print(td[0].text + "   " + td[1].text + "   " + td[2].text + "  =============> " + convert)
+                    data1 = self.db.country_list.find_one({'country_name': country})
+                    # print('Scotia Bank',country, data1['currency'],data1['cur_sign'],
+                    #    '$40.00', '3 to 4 business days', convert, time, text,
+                    #    'img/web_logo/scotiabank.jpg','http://www.scotiabank.com/ca/en/0,,1118,00.html')
+                    add_to_database(self.db.records, 'Scotia Bank', country, data1['currency'], data1['cur_sign'],
+                                    '$40.00', '3 to 4 business days', convert, time, text,
+                                    'img/web_logo/scotiabank.jpg', 'http://www.scotiabank.com/ca/en/0,,1118,00.html')
+        except Exception as e:
+            print(e)
+            self.driver.close()
     '''
     table = soup.find('table', attrs={'class': 'rates'})
         tr = table.find_all('tr')

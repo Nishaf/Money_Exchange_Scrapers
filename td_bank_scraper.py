@@ -26,46 +26,49 @@ class TorontoDominionBank:
         item = items.find({'time': time}).count()
         mongo.close()
         if item > 0:
-            self.update = False
+            self.up_to_date = True
             return True
         else:
-            self.update = True
+            self.up_to_date = False
             return False
 
     def run(self):
-        self.driver.get(self.url)
-        soup = BeautifulSoup(self.driver.page_source)
+        try:
+            self.driver.get(self.url)
+            soup = BeautifulSoup(self.driver.page_source)
 
-        table = soup.find('table')
-        tr = table.find_all('tr')
-        headers = tr[0]
-        headers = headers.find_all('th')
-        data = tr[1:]
-        time = (soup.find('label', attrs={'class': 'ng-binding'}).text).strip()
+            table = soup.find('table')
+            tr = table.find_all('tr')
+            headers = tr[0]
+            headers = headers.find_all('th')
+            data = tr[1:]
+            time = (soup.find('label', attrs={'class': 'ng-binding'}).text).strip()
 
-        if self.check_date(time):
-            return
+            if self.check_date(time):
+                return
 
-        text = 'Rates may change throughout the day and may differ at the time of booking.'
-        print(headers[0].text + "   " + headers[1].text + "   " + headers[2].text + "        1 CAD = ?")
-        country_data = self.db.country_list.find()
-        for i in country_data:
-            for row in data:
-                td = row.find_all('td')
-                if i['currency'] == td[0].text:
-                    try:
-                        convert = str(1.0 / float(td[2].text))
-                    except:
-                        convert = None
+            text = 'Rates may change throughout the day and may differ at the time of booking.'
+            print(headers[0].text + "   " + headers[1].text + "   " + headers[2].text + "        1 CAD = ?")
+            country_data = self.db.country_list.find()
+            for i in country_data:
+                for row in data:
+                    td = row.find_all('td')
+                    if i['currency'] == td[0].text:
+                        try:
+                            convert = str(1.0 / float(td[2].text))
+                        except:
+                            convert = None
 
-                    # print('Toronto Dominion Bank',i['country_name'],  i['currency'],i['cur_sign'],
-                    #                '$40.00', '3 to 4 business days', convert, time, text,
-                    #                 'img/web_logo/td1.jpg', 'https://www.tdcommercialbanking.com/rates/index.jsp')
+                        # print('Toronto Dominion Bank',i['country_name'],  i['currency'],i['cur_sign'],
+                        #                '$40.00', '3 to 4 business days', convert, time, text,
+                        #                 'img/web_logo/td1.jpg', 'https://www.tdcommercialbanking.com/rates/index.jsp')
 
-                    add_to_database(self.db.records, 'Toronto Dominion Bank', i['country_name'], i['currency'], i['cur_sign'],
-                                    '$40.00', '3 to 4 business days', convert, time, text,
-                                    'img/web_logo/td1.jpg', 'https://www.tdcommercialbanking.com/rates/index.jsp')
-
+                        add_to_database(self.db.records, 'Toronto Dominion Bank', i['country_name'], i['currency'], i['cur_sign'],
+                                        '$40.00', '3 to 4 business days', convert, time, text,
+                                        'img/web_logo/td1.jpg', 'https://www.tdcommercialbanking.com/rates/index.jsp')
+        except Exception as e:
+            print(e)
+            self.driver.close()
     '''
     table = soup.find('table')
         tr = table.find_all('tr')
