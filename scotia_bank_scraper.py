@@ -43,6 +43,10 @@ class ScotiaBank:
         try:
             self.driver.get(self.url)
             soup = BeautifulSoup(self.driver.page_source)
+            time = (soup.find('li', attrs={'class': 'effective-date'}).text).strip()
+
+            if self.check_date(time):
+                return
 
             table = soup.find('table', attrs={'class': 'rates'})
             tr = table.find_all('tr')
@@ -50,10 +54,6 @@ class ScotiaBank:
             headers = headers.find_all('td')
             data = tr[1:]
             print(headers[0].text + "   " + headers[1].text + "   " + headers[2].text + "        1 CAD = ?")
-            time = (soup.find('li', attrs={'class': 'effective-date'}).text).strip()
-
-            if self.check_date(time):
-                return
 
             text = 'Rates are provided for information purposes only and are subject to change at any time.'
             country_list = self.get_country_list()
