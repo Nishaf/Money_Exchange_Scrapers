@@ -15,6 +15,7 @@ class TorontoDominionBank:
         mongo = MongoClient()
         self.db = mongo['transfer_rates']
         self.run()
+        self.driver.stop_client()
         self.driver.close()
         mongo.close()
 
@@ -68,6 +69,7 @@ class TorontoDominionBank:
                                         'img/web_logo/td1.jpg', 'https://www.tdcommercialbanking.com/rates/index.jsp')
         except Exception as e:
             print(e)
+            self.driver.stop_client()
             self.driver.close()
     '''
     table = soup.find('table')

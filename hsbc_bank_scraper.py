@@ -16,6 +16,7 @@ class HSBCBank:
         mongo = MongoClient()
         self.db = mongo['transfer_rates']
         self.run()
+        self.driver.stop_client()
         self.driver.close()
         mongo.close()
 
@@ -72,6 +73,7 @@ class HSBCBank:
                                         'http://www.hsbc.ca/1/2/personal/banking/accounts/foreign-currency-accounts/foreign-currency-exchange')
         except Exception as e:
             print(e)
+            self.driver.stop_client()
             self.driver.close()
     '''
     table = soup.find('table', attrs={'class': 'hsbcTableStyleViewRates'})

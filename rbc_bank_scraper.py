@@ -20,6 +20,7 @@ class RoyalBank:
         mongo = MongoClient()
         self.db = mongo['transfer_rates']
         self.run()
+        self.driver.stop_client()
         self.driver.close()
         mongo.close()
 
@@ -124,6 +125,7 @@ class RoyalBank:
                                     'http://www.rbcroyalbank.com/rates/rates/cashrates.html')
         except Exception as e:
             print(e)
+            self.driver.stop_client()
             self.driver.close()
 '''
 

@@ -14,6 +14,7 @@ class ScotiaBank:
         mongo = MongoClient()
         self.db = mongo['transfer_rates']
         self.run()
+        self.driver.stop_client()
         self.driver.close()
         mongo.close()
 
@@ -74,6 +75,7 @@ class ScotiaBank:
                                     'img/web_logo/scotiabank.jpg', 'http://www.scotiabank.com/ca/en/0,,1118,00.html')
         except Exception as e:
             print(e)
+            self.driver.stop_client()
             self.driver.close()
     '''
     table = soup.find('table', attrs={'class': 'rates'})
