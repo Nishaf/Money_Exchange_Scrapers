@@ -125,8 +125,6 @@ class RoyalBank:
         except Exception as e:
             print(e)
             self.driver.close()
-
-RoyalBank()
 '''
 
 def get_country_list(self):

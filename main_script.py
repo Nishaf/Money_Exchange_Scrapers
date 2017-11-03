@@ -45,8 +45,8 @@ if __name__ == "__main__":
     BREAK_TIME = 30                         # BREAK_TIME IN MINUTES
     mail_subject = ""
     while True:
-        print("Scraping Royal Bank")
         try:
+            print("Scraping Royal Bank")
             a = RoyalBank()
             if a.up_to_date:
                 mail_subject += 'Royal Bank Not Updated.\n'
