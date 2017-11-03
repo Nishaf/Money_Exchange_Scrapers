@@ -101,7 +101,11 @@ class RoyalBank:
         try:
             self.driver.get(self.url)
             sleep(2)
-            time_text = (self.driver.find_element_by_xpath("//p[@class='pad-t-qtr text-center text-grey minor']").text).strip()
+            try:
+                time_text = (self.driver.find_element_by_xpath("//p[@class='pad-t-qtr text-center text-grey minor']").text).strip()
+            except KeyError:
+                sleep(2)
+                time_text = (self.driver.find_element_by_xpath("//p[@class='pad-t-qtr text-center text-grey minor']").text).strip()
 
             if self.check_date(time_text):
                 return

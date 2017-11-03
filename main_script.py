@@ -97,7 +97,7 @@ if __name__ == "__main__":
 
         mail_subject += "Completed at " + str(datetime.now())
 
-        send_email(["bsef14a531@pucit.edu.pk"],
+        send_email(["hkamboe@gmail.com", "bsef14a531@pucit.edu.pk"],
                    email_body=mail_subject,
                    email_subject='FXRATEHUNTER_SCRAPERS_INFO')
 
