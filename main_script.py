@@ -101,6 +101,7 @@ if __name__ == "__main__":
                    email_body=mail_subject,
                    email_subject='FXRATEHUNTER_SCRAPERS_INFO')
 
+
         print("Going to Sleep for " + str(BREAK_TIME * 60) + ' seconds!!')
         sleep(int(BREAK_TIME) * 60)
 
