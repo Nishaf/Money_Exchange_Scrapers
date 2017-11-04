@@ -101,7 +101,14 @@ class RoyalBank:
         try:
             self.driver.get(self.url)
             sleep(2)
-            self.up_to_date = False
+            try:
+                time_text = (self.driver.find_element_by_xpath("//p[@class='pad-t-qtr text-center text-grey minor']").text).strip()
+            except KeyError:
+                sleep(2)
+                time_text = (self.driver.find_element_by_xpath("//p[@class='pad-t-qtr text-center text-grey minor']").text).strip()
+
+            if self.check_date(time_text):
+                return
 
             time, textt = self.get_rates_from_webpage()
             country_list = self.db.country_list.find()
@@ -109,8 +116,8 @@ class RoyalBank:
                 if entity['currency'] in self.currency_li:
                     index = self.currency_li.index(entity['currency'])
                     rate = self.rate_li[index]
-
                     print(self.currency_li[index] + " =====> " + rate)
+
                     add_to_database(self.db.records, 'Royal Bank', entity['country_name'], entity['currency'],
                                     entity['cur_sign'], '$40.00', '3 to 4 business days', rate, time, textt,
                                     'img/web_logo/rbc_royalbank_en.png',
