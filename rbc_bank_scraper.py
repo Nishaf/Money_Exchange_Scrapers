@@ -116,8 +116,8 @@ class RoyalBank:
                 if entity['currency'] in self.currency_li:
                     index = self.currency_li.index(entity['currency'])
                     rate = self.rate_li[index]
-                    print(self.currency_li[index] + " =====> " + rate)
 
+                    print(self.currency_li[index] + " =====> " + rate)
                     add_to_database(self.db.records, 'Royal Bank', entity['country_name'], entity['currency'],
                                     entity['cur_sign'], '$40.00', '3 to 4 business days', rate, time, textt,
                                     'img/web_logo/rbc_royalbank_en.png',
