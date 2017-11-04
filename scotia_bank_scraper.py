@@ -14,8 +14,7 @@ class ScotiaBank:
         mongo = MongoClient()
         self.db = mongo['transfer_rates']
         self.run()
-        self.driver.stop_client()
-        self.driver.close()
+        self.driver.quit()
         mongo.close()
 
     def get_country_list(self):
@@ -76,8 +75,7 @@ class ScotiaBank:
                                     'img/web_logo/scotiabank.jpg', 'http://www.scotiabank.com/ca/en/0,,1118,00.html')
         except Exception as e:
             print(e)
-            self.driver.stop_client()
-            self.driver.close()
+            self.driver.quit()
     '''
     table = soup.find('table', attrs={'class': 'rates'})
         tr = table.find_all('tr')

@@ -15,8 +15,7 @@ class TorontoDominionBank:
         mongo = MongoClient()
         self.db = mongo['transfer_rates']
         self.run()
-        self.driver.stop_client()
-        self.driver.close()
+        self.driver.quit()
         mongo.close()
 
     def check_date(self, time):
@@ -69,8 +68,7 @@ class TorontoDominionBank:
                                         'img/web_logo/td1.jpg', 'https://www.tdcommercialbanking.com/rates/index.jsp')
         except Exception as e:
             print(e)
-            self.driver.stop_client()
-            self.driver.close()
+            self.driver.quit()
     '''
     table = soup.find('table')
         tr = table.find_all('tr')

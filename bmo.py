@@ -16,8 +16,7 @@ class BMO:
         mongo = MongoClient()
         self.db = mongo['transfer_rates']
         self.run()
-        self.driver.stop_client()
-        self.driver.close()
+        self.driver.quit()
         mongo.close()
 
     def get_country_list(self):
@@ -85,8 +84,7 @@ class BMO:
 
         except Exception as e:
             print(e)
-            self.driver.stop_client()
-            self.driver.close()
+            self.driver.quit()
         '''
         table = soup.find('table', attrs={'id': 'ratesTable'})
         tr = table.find_all('tr')

@@ -20,8 +20,7 @@ class RoyalBank:
         mongo = MongoClient()
         self.db = mongo['transfer_rates']
         self.run()
-        self.driver.stop_client()
-        self.driver.close()
+        self.driver.quit()
         mongo.close()
 
     def get_currency(self):
@@ -97,7 +96,7 @@ class RoyalBank:
 
         except Exception as e:
             print(e)
-            self.driver.close()
+            self.driver.quit()
     def run(self):
         try:
             self.driver.get(self.url)

@@ -43,8 +43,8 @@ def send_email(email, email_body='', email_subject=''):
 
 if __name__ == "__main__":
     BREAK_TIME = 30                         # BREAK_TIME IN MINUTES
-    mail_subject = ""
     while True:
+        mail_subject = ""
         try:
             print("Scraping Royal Bank")
             a = RoyalBank()
