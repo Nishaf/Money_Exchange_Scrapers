@@ -101,7 +101,7 @@ class RoyalBank:
         try:
             self.driver.get(self.url)
             sleep(2)
-
+            self.up_to_date = False
 
             time, textt = self.get_rates_from_webpage()
             country_list = self.db.country_list.find()
