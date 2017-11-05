@@ -8,6 +8,7 @@ from datetime import datetime
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import os
 
 
 FROM_EMAIL = 'fake20337@gmail.com'
@@ -104,8 +105,12 @@ if __name__ == "__main__":
 
         print("Going to Sleep for " + str(BREAK_TIME * 60) + ' seconds!!')
         sleep(int(BREAK_TIME) * 60)
-
-
+        try:
+            os.system("killall chromedriver")
+            os.system("killall chrome")
+            os.system("killall Xvfb")
+        except OSError as e:
+            print(e)
 
 """
 from time import sleep
