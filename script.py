@@ -35,5 +35,10 @@ def get_date():
     return date.strftime("%Y-%m-%d")
 
 
+import pymongo
+client = pymongo.MongoClient("mongodb://hkamboe:hkamboe@fxratehunter8080!!@127.0.0.1/transfer_rates")
 
-get_date()
+db = client['transfer_rates']
+print(db.records.count())
+
+client.close()

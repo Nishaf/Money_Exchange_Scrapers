@@ -99,9 +99,9 @@ if __name__ == "__main__":
 
         mail_subject += "Completed at " + str(datetime.now())
 
-        #send_email(["hkamboe@gmail.com", "bsef14a531@pucit.edu.pk"],
-        #           email_body=mail_subject,
-        #           email_subject='FXRATEHUNTER_SCRAPERS_INFO')
+        send_email(["hkamboe@gmail.com", "bsef14a531@pucit.edu.pk"],
+                   email_body=mail_subject,
+                   email_subject='FXRATEHUNTER_SCRAPERS_INFO')
 
 
         print("Going to Sleep for " + str(BREAK_TIME * 60) + ' seconds!!')
@@ -177,3 +177,24 @@ if __name__ == '__main__':
         print("Going to Sleep")
         sleep(int(time_break) * 60)
 """
+
+#db.createUser({user:'hkamboe',pwd:'hkamboefxratehunter8080!!',roles:[{role:"clusterAdmin", db:"admin"},{role:"readAnyDatabase", db:"admin"},"readWrite"]})
+
+
+'''
+{
+	"user" : "hkamboe",
+	"roles" : [
+		{
+			"role" : "clusterAdmin",
+			"db" : "admin"
+		},
+		{
+			"role" : "readAnyDatabase",
+			"db" : "admin"
+		},
+		"readWrite"
+	]
+}
+
+'''
