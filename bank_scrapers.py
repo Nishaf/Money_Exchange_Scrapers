@@ -259,6 +259,8 @@ def sitemap_generator():
 
 
 
+'''
+
 from pymongo import MongoClient
 #import xlwt
 def get():
@@ -288,7 +290,6 @@ from ebaysdk.finding import Connection as finding
 
 api = finding(siteid='EBAY-US', appid='NishafNa-Nishaf-PRD-2090fc79c-557dac4b',config_file=None)
 
-'''
 api.execute('findItemsAdvanced', {
     'keywords': 'laptop',
     'categoryId': ['177', '111422'],
