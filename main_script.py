@@ -46,6 +46,7 @@ if __name__ == "__main__":
     BREAK_TIME = 30                         # BREAK_TIME IN MINUTES
     while True:
         mail_subject = ""
+
         try:
             print("Scraping Royal Bank")
             a = RoyalBank()
@@ -98,9 +99,9 @@ if __name__ == "__main__":
 
         mail_subject += "Completed at " + str(datetime.now())
 
-        send_email(["hkamboe@gmail.com", "bsef14a531@pucit.edu.pk"],
-                   email_body=mail_subject,
-                   email_subject='FXRATEHUNTER_SCRAPERS_INFO')
+        #send_email(["hkamboe@gmail.com", "bsef14a531@pucit.edu.pk"],
+        #           email_body=mail_subject,
+        #           email_subject='FXRATEHUNTER_SCRAPERS_INFO')
 
 
         print("Going to Sleep for " + str(BREAK_TIME * 60) + ' seconds!!')

@@ -6,6 +6,7 @@ import re
 from pymongo import MongoClient
 from time import sleep
 from bank_scrapers import add_to_database
+import datetime
 
 class RoyalBank:
     def __init__(self):
@@ -97,6 +98,31 @@ class RoyalBank:
         except Exception as e:
             print(e)
             self.driver.quit()
+
+
+    def get_date(self):
+        date = datetime.datetime.now()
+        print(date)
+        if date.weekday() in [0, 1, 2]:
+            print(date.weekday())
+            date += datetime.timedelta(2)
+        elif date.weekday() == 3:
+            print(3)
+            date += datetime.timedelta(4)
+        elif date.weekday() == 4:
+            print(4)
+            date += datetime.timedelta(4)
+        elif date.weekday() == 5:
+            print(5)
+            date += datetime.timedelta(4)
+        elif date.weekday() == 6:
+            print(6)
+            date += datetime.timedelta(3)
+
+        print("Print Date:" + str(date.strftime("%Y-%m-%d")))
+        return date.strftime("%Y-%m-%d")
+
+
     def run(self):
         try:
             self.driver.get(self.url)
@@ -119,7 +145,7 @@ class RoyalBank:
                     print(self.currency_li[index] + " =====> " + rate)
 
                     add_to_database(self.db.records, 'Royal Bank', entity['country_name'], entity['currency'],
-                                    entity['cur_sign'], '$40.00', '3 to 4 business days', rate, time, textt,
+                                    entity['cur_sign'], '$40.00', self.get_date(), rate, time, textt,
                                     'img/web_logo/rbc_royalbank_en.png',
                                     'https://online.royalbank.com/cgi-bin/tools/foreign-exchange-calculator/start.cgi')
         except Exception as e:

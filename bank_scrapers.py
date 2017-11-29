@@ -199,7 +199,7 @@ def add_to_database(records_col, bank_name,country, currency, cur_sign,transfer_
                 'bank_name': bank_name,
                 'currency': currency,
                 'transfer_fee': transfer_fee,
-                'transfer_time': transfer_time,
+                'transfer_time': str(transfer_time),
                 'rate': rate,
                 'time': time,
                 'bank_note': text,
@@ -238,3 +238,121 @@ def insert_all():
     items.insert({'country':'usa','flag':'/img/icon/usa.jpg'})
 
     mongo.close()
+
+
+
+
+
+def sitemap_generator():
+    string = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="https://fxratehunter.com">\n'
+    url = "https://fxratehunter.com/send-money-from-canada-to-"
+    mongo = MongoClient()
+    db = mongo['transfer_rates']
+    for item in db.country_list.find():
+        country_name = '-'.join(item['country_name'].split(' ')) if ' ' in item['country_name'] else item['country_name']
+        string += "<url>\n<loc>"+url+(country_name).lower()+"</loc>\n<lastmod>2017-11-06</lastmod>\n<changefreq>hourly</changefreq>\n</url>\n"
+
+    string += "</urlset>"
+
+    print(string)
+    mongo.close()
+
+
+
+from pymongo import MongoClient
+import xlwt
+def get():
+    wb = xlwt.Workbook()
+    sheet1 = wb.add_sheet('Countries')
+    sheet1.write(0,0,'Country_Names')
+    sheet1.write(0,1,'Country_URLS')
+    mongo = MongoClient()
+    db = mongo['transfer_rates']
+    count = 1
+    for i in db.country_list.find():
+        country_name = '-'.join(i['country_name'].split(' ')) if ' ' in i['country_name'] else i['country_name']
+        link = 'https://fxratehunter.com/send-money-from-canada-to-'+ country_name.lower()
+        sheet1.write(count,0,i['country_name'])
+        sheet1.write(count,1, link)
+        count += 1
+    wb.save('workbook.xls')
+
+
+#get()
+
+
+import datetime
+
+import ebaysdk
+from ebaysdk.finding import Connection as finding
+
+api = finding(siteid='EBAY-US', appid='NishafNa-Nishaf-PRD-2090fc79c-557dac4b',config_file=None)
+
+'''
+api.execute('findItemsAdvanced', {
+    'keywords': 'laptop',
+    'categoryId': ['177', '111422'],
+    'itemFilter': [
+        {'name': 'Condition', 'value': 'Used'},
+        {'name': 'MinPrice', 'value': '200', 'paramName': 'Currency', 'paramValue': 'USD'},
+        {'name': 'MaxPrice', 'value': '2000', 'paramName': 'Currency', 'paramValue': 'USD'}
+    ],
+    'paginationInput': {
+        'entriesPerPage': '500',
+        'pageNumber': '5'
+    },
+    'sortOrder': 'CurrentPriceHighest'
+})
+'''
+
+'''
+
+api.execute('findItemsAdvanced', {'keywords': 'laptop', 'PageNumber': 1})
+
+dictstr = api.response.dict()
+
+for item in dictstr['searchResult']['item']:
+    print(item)
+
+'''
+
+import xlwt
+def ebay_api():
+    count = 1
+    wb = xlwt.Workbook()
+    sheet = wb.add_sheet('Ebay-Laptop-Results')
+    sheet.write(0,0,'ItemID')
+    sheet.write(0,1,'Title')
+    sheet.write(0,2,'CategoryID')
+    sheet.write(0,3,'CategoryName')
+    sheet.write(0,4,'SellingPrice')
+    sheet.write(0,5,'GalleryURL')
+    item_count = 1
+    while True:
+        try:
+            api.execute('findItemsByProduct', {'productId': '182550465931'})
+
+            dictstr = api.response.dict()
+            print(dictstr)
+                #for item in dictstr['searchResult']['item']:
+                #    print(item)
+                #print("ItemID: %s" % item['itemId'])
+                #print("Title: %s" % item['title'])
+                #print("CategoryID: %s" % item['primaryCategory']['categoryId'])
+                #print("CategoryID: %s" % item['primaryCategory']['categoryName'])
+                #print("Selling Price: %s" % item['sellingStatus']['currentPrice']['value'])
+                #print("GalleryUrl: %s" % item['galleryURL'])
+                #sheet.write(item_count,0, item['itemId'])
+                #sheet.write(item_count,1, item['title'])
+                #sheet.write(item_count,2, item['primaryCategory']['categoryId'])
+                #sheet.write(item_count,3, item['primaryCategory']['categoryName'])
+                #sheet.write(item_count,4, item['sellingStatus']['currentPrice']['value'])
+                #sheet.write(item_count,5, item['galleryURL'])
+                #item_count += 1
+            #count += 1
+
+            #wb.save('Ebay-Laptop-Results.xls')
+
+        except Exception as e:
+            print(e)
+            wb.save('Ebay-Laptop-Results.xls')

@@ -3,6 +3,8 @@ from pyvirtualdisplay import Display
 from selenium import webdriver
 from pymongo import MongoClient
 from bank_scrapers import add_to_database
+import datetime
+
 class ScotiaBank:
     def __init__(self):
         self.url = "http://www.scotiabank.com/ca/en/0,,1118,00.html"
@@ -38,6 +40,28 @@ class ScotiaBank:
             self.up_to_date = False
             return False
 
+    def get_date(self):
+        date = datetime.datetime.now()
+        print(date)
+        if date.weekday() in [0, 1, 2]:
+            print(date.weekday())
+            date += datetime.timedelta(2)
+        elif date.weekday() == 3:
+            print(3)
+            date += datetime.timedelta(4)
+        elif date.weekday() == 4:
+            print(4)
+            date += datetime.timedelta(4)
+        elif date.weekday() == 5:
+            print(5)
+            date += datetime.timedelta(4)
+        elif date.weekday() == 6:
+            print(6)
+            date += datetime.timedelta(3)
+
+        print("Print Date:" + str(date.strftime("%Y-%m-%d")))
+        return date.strftime("%Y-%m-%d")
+
     def run(self):
         try:
             self.driver.get(self.url)
@@ -71,7 +95,7 @@ class ScotiaBank:
                     #    '$40.00', '3 to 4 business days', convert, time, text,
                     #    'img/web_logo/scotiabank.jpg','http://www.scotiabank.com/ca/en/0,,1118,00.html')
                     add_to_database(self.db.records, 'Scotia Bank', country, data1['currency'], data1['cur_sign'],
-                                    '$40.00', '3 to 4 business days', convert, time, text,
+                                    '$40.00', self.get_date(), convert, time, text,
                                     'img/web_logo/scotiabank.jpg', 'http://www.scotiabank.com/ca/en/0,,1118,00.html')
         except Exception as e:
             print(e)
