@@ -260,7 +260,7 @@ def sitemap_generator():
 
 
 from pymongo import MongoClient
-import xlwt
+#import xlwt
 def get():
     wb = xlwt.Workbook()
     sheet1 = wb.add_sheet('Countries')
@@ -314,8 +314,6 @@ dictstr = api.response.dict()
 for item in dictstr['searchResult']['item']:
     print(item)
 
-'''
-
 import xlwt
 def ebay_api():
     count = 1
@@ -356,3 +354,5 @@ def ebay_api():
         except Exception as e:
             print(e)
             wb.save('Ebay-Laptop-Results.xls')
+
+'''
