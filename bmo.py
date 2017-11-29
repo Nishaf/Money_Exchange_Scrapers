@@ -14,7 +14,7 @@ class BMO:
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--no-sandbox')
         self.driver = webdriver.Chrome('/home/Money_Exchange_Scrapers/chromedriver', chrome_options=chrome_options)#('/home/nishaf/chromedriver')#
-        mongo = MongoClient()
+        mongo = MongoClient("mongodb://hkamboe:hkamboefxratehunter8080!!@127.0.0.1/transfer_rates")
         self.db = mongo['transfer_rates']
         self.run()
         self.driver.quit()
@@ -28,7 +28,7 @@ class BMO:
         return country_list
 
     def check_date(self, time):
-        mongo = MongoClient()
+        mongo = MongoClient("mongodb://hkamboe:hkamboefxratehunter8080!!@127.0.0.1/transfer_rates")
         db = mongo['transfer_rates']
         items = db['records']
 

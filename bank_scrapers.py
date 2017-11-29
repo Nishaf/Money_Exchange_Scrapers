@@ -227,7 +227,7 @@ def add_to_database(records_col, bank_name,country, currency, cur_sign,transfer_
 
 
 def insert_all():
-    mongo = MongoClient()
+    mongo = MongoClient("mongodb://hkamboe:hkamboefxratehunter8080!!@127.0.0.1/transfer_rates")
     db=mongo['transfer_rates']
     items = db['flags']
     items.insert({'country':'canada','flag':'/img/icon/canada.jpg'})
@@ -246,7 +246,7 @@ def insert_all():
 def sitemap_generator():
     string = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="https://fxratehunter.com">\n'
     url = "https://fxratehunter.com/send-money-from-canada-to-"
-    mongo = MongoClient()
+    mongo = MongoClient("mongodb://hkamboe:hkamboefxratehunter8080!!@127.0.0.1/transfer_rates")
     db = mongo['transfer_rates']
     for item in db.country_list.find():
         country_name = '-'.join(item['country_name'].split(' ')) if ' ' in item['country_name'] else item['country_name']
@@ -266,7 +266,7 @@ def get():
     sheet1 = wb.add_sheet('Countries')
     sheet1.write(0,0,'Country_Names')
     sheet1.write(0,1,'Country_URLS')
-    mongo = MongoClient()
+    mongo = MongoClient("mongodb://hkamboe:hkamboefxratehunter8080!!@127.0.0.1/transfer_rates")
     db = mongo['transfer_rates']
     count = 1
     for i in db.country_list.find():
