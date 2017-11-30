@@ -34,23 +34,16 @@ class TorontoDominionBank:
             return False
 
     def get_date(self):
-        date = datetime.datetime.now()
+        date = datetime.datetime.now() + datetime.timedelta(2)
         print(date)
-        if date.weekday() in [0, 1, 2]:
-            print(date.weekday())
-            date += datetime.timedelta(2)
-        elif date.weekday() == 3:
+        if date.weekday() in [0, 1]:
+            date += datetime.timedelta(3)
+        elif date.weekday() in [2, 3, 4, 5]:
             print(3)
-            date += datetime.timedelta(4)
-        elif date.weekday() == 4:
-            print(4)
-            date += datetime.timedelta(4)
-        elif date.weekday() == 5:
-            print(5)
-            date += datetime.timedelta(4)
+            date += datetime.timedelta(5)
         elif date.weekday() == 6:
             print(6)
-            date += datetime.timedelta(3)
+            date += datetime.timedelta(4)
 
         print("Print Date:" + str(date.strftime("%Y-%m-%d")))
         return date.strftime("%Y-%m-%d")
@@ -70,7 +63,7 @@ class TorontoDominionBank:
             if self.check_date(time):
                 return
 
-            text = 'Rates may change throughout the day and may differ at the time of booking.'
+            text = ['Rates may change throughout the day and may differ at the time of booking.']
             print(headers[0].text + "   " + headers[1].text + "   " + headers[2].text + "        1 CAD = ?")
             country_data = self.db.country_list.find()
             for i in country_data:
@@ -87,7 +80,7 @@ class TorontoDominionBank:
                         #                 'img/web_logo/td1.jpg', 'https://www.tdcommercialbanking.com/rates/index.jsp')
 
                         add_to_database(self.db.records, 'Toronto Dominion Bank', i['country_name'], i['currency'], i['cur_sign'],
-                                        '$40.00', self.get_date(), convert, time, text,
+                                        '$30.00', self.get_date(), convert, time, text,
                                         'img/web_logo/td1.jpg', 'https://www.tdcommercialbanking.com/rates/index.jsp')
         except Exception as e:
             print(e)

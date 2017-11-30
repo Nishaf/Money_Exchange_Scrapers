@@ -79,7 +79,7 @@ class BMO:
 
             if self.check_date(time):
                 return
-            text = "Foreign exchange rates are subject to change at any time."
+            text = ["Foreign exchange rates are subject to change at any time."]
             data = tr[1:]
             country_list = self.get_country_list()
             for row in data:

@@ -41,26 +41,20 @@ class ScotiaBank:
             return False
 
     def get_date(self):
-        date = datetime.datetime.now()
+        date = datetime.datetime.now() + datetime.timedelta(2)
         print(date)
-        if date.weekday() in [0, 1, 2]:
-            print(date.weekday())
-            date += datetime.timedelta(2)
-        elif date.weekday() == 3:
+        if date.weekday() in [0, 1]:
+            date += datetime.timedelta(3)
+        elif date.weekday() in [2, 3, 4, 5]:
             print(3)
-            date += datetime.timedelta(4)
-        elif date.weekday() == 4:
-            print(4)
-            date += datetime.timedelta(4)
-        elif date.weekday() == 5:
-            print(5)
-            date += datetime.timedelta(4)
+            date += datetime.timedelta(5)
         elif date.weekday() == 6:
             print(6)
-            date += datetime.timedelta(3)
+            date += datetime.timedelta(4)
 
         print("Print Date:" + str(date.strftime("%Y-%m-%d")))
         return date.strftime("%Y-%m-%d")
+
 
     def run(self):
         try:
@@ -79,7 +73,7 @@ class ScotiaBank:
             data = tr[1:]
             print(headers[0].text + "   " + headers[1].text + "   " + headers[2].text + "        1 CAD = ?")
 
-            text = 'Rates are provided for information purposes only and are subject to change at any time.'
+            text = ['Scotia Bank may charge a small percentage of the amount being sent as an additional fee.','Rates are provided for information purposes only and are subject to change at any time.']
             country_list = self.get_country_list()
             for row in data:
                 td = row.find_all('td')
@@ -95,7 +89,7 @@ class ScotiaBank:
                     #    '$40.00', '3 to 4 business days', convert, time, text,
                     #    'img/web_logo/scotiabank.jpg','http://www.scotiabank.com/ca/en/0,,1118,00.html')
                     add_to_database(self.db.records, 'Scotia Bank', country, data1['currency'], data1['cur_sign'],
-                                    '$40.00', self.get_date(), convert, time, text,
+                                    '$15.00', self.get_date(), convert, time, text,
                                     'img/web_logo/scotiabank.jpg', 'http://www.scotiabank.com/ca/en/0,,1118,00.html')
         except Exception as e:
             print(e)

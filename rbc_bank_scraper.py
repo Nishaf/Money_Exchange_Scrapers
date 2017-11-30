@@ -61,7 +61,7 @@ class RoyalBank:
         try:
             self.driver.execute_script("return window.scrollBy(0,300);")
             time_text = (self.driver.find_element_by_xpath("//p[@class='pad-t-qtr text-center text-grey minor']").text).strip()
-            statement = self.driver.find_element_by_xpath("//p[@class='pad-b-0 mob-pad-b-hlf text-center text-grey minor']").text
+            statement = [self.driver.find_element_by_xpath("//p[@class='pad-b-0 mob-pad-b-hlf text-center text-grey minor']").text]
             self.cur_list = self.get_currency()
             self.insert_in_db()
             self.driver.find_elements_by_xpath("//div[@class='currency-select ui fluid selection dropdown']")[1].click()
@@ -137,6 +137,7 @@ class RoyalBank:
                 return
 
             time, textt = self.get_rates_from_webpage()
+            textt = textt
             country_list = self.db.country_list.find()
             for entity in country_list:
                 if entity['currency'] in self.currency_li:
@@ -145,7 +146,7 @@ class RoyalBank:
                     print(self.currency_li[index] + " =====> " + rate)
 
                     add_to_database(self.db.records, 'Royal Bank', entity['country_name'], entity['currency'],
-                                    entity['cur_sign'], '$40.00', self.get_date(), rate, time, textt,
+                                    entity['cur_sign'], '$55.00', self.get_date(), rate, time, textt,
                                     'img/web_logo/rbc_royalbank_en.png',
                                     'https://online.royalbank.com/cgi-bin/tools/foreign-exchange-calculator/start.cgi')
         except Exception as e:

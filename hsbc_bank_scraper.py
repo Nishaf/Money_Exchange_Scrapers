@@ -35,23 +35,16 @@ class HSBCBank:
             return False
 
     def get_date(self):
-        date = datetime.datetime.now()
+        date = datetime.datetime.now() + datetime.timedelta(2)
         print(date)
-        if date.weekday() in [0, 1, 2]:
-            print(date.weekday())
-            date += datetime.timedelta(2)
-        elif date.weekday() == 3:
+        if date.weekday() in [0, 1]:
+            date += datetime.timedelta(3)
+        elif date.weekday() in [2, 3, 4, 5]:
             print(3)
-            date += datetime.timedelta(4)
-        elif date.weekday() == 4:
-            print(4)
-            date += datetime.timedelta(4)
-        elif date.weekday() == 5:
-            print(5)
-            date += datetime.timedelta(4)
+            date += datetime.timedelta(5)
         elif date.weekday() == 6:
             print(6)
-            date += datetime.timedelta(3)
+            date += datetime.timedelta(4)
 
         print("Print Date:" + str(date.strftime("%Y-%m-%d")))
         return date.strftime("%Y-%m-%d")
@@ -72,7 +65,7 @@ class HSBCBank:
             if self.check_date(time):
                 return
 
-            text = 'Rates are subject to change without notice.'
+            text = ['Rates are subject to change without notice.']
             country_data = self.db.country_list.find()
             print(len(data))
             for i in country_data:
