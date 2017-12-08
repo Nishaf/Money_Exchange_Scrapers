@@ -35,7 +35,7 @@ class HSBCBank:
             return False
 
     def get_date(self):
-        date = datetime.datetime.now() + datetime.timedelta(2)
+        date = datetime.datetime.now()
         print(date)
         if date.weekday() in [0, 1]:
             date += datetime.timedelta(3)

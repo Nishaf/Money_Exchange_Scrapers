@@ -281,17 +281,12 @@ def get():
 
 
 #get()
-
+'''
 
 import datetime
 
-import ebaysdk
-from ebaysdk.finding import Connection as finding
-
-api = finding(siteid='EBAY-US', appid='NishafNa-Nishaf-PRD-2090fc79c-557dac4b',config_file=None)
-
-api.execute('findItemsAdvanced', {
-    'keywords': 'laptop',
+'''
+'keywords': 'laptop',
     'categoryId': ['177', '111422'],
     'itemFilter': [
         {'name': 'Condition', 'value': 'Used'},
@@ -303,12 +298,18 @@ api.execute('findItemsAdvanced', {
         'pageNumber': '5'
     },
     'sortOrder': 'CurrentPriceHighest'
+
+import ebaysdk
+from ebaysdk.finding import Connection as finding
+
+api = finding(siteid='EBAY-US', appid='NishafNa-Nishaf-PRD-2090fc79c-557dac4b',config_file=None)
+
+api.execute('GetSingleItem', {
+    'ItemID':'142316687536'
 })
-'''
 
-'''
 
-api.execute('findItemsAdvanced', {'keywords': 'laptop', 'PageNumber': 1})
+#api.execute('findItemsAdvanced', {'keywords': 'laptop', 'PageNumber': 1})
 
 dictstr = api.response.dict()
 
@@ -334,7 +335,7 @@ def ebay_api():
             dictstr = api.response.dict()
             print(dictstr)
                 #for item in dictstr['searchResult']['item']:
-                #    print(item)
+                 #    print(item)
                 #print("ItemID: %s" % item['itemId'])
                 #print("Title: %s" % item['title'])
                 #print("CategoryID: %s" % item['primaryCategory']['categoryId'])
@@ -358,3 +359,30 @@ def ebay_api():
 
 '''
 
+import requests,json
+'''callname=GetSingleItem&responseencoding=JSON&'
+                    'appid=NishafNa-Nishaf-PRD-2090fc79c-557dac4b&siteid=77&version=515&'
+                    'IncludeSelector=ShippingCosts,Details,Description,ItemSpecifics,Variations,Compatibility&ItemID=382295822155'''
+
+query= {'callname':'GetSingleItem','responseencoding':'JSON',
+        'appid':'NishafNa-Nishaf-PRD-2090fc79c-557dac4b',
+        'siteid':'77', 'version': '515','ItemID':'382295822155',
+        'IncludeSelector':'ShippingCosts,Details,Description,ItemSpecifics,Variations,Compatibility'}
+
+code = requests.get('http://open.api.ebay.com/shopping',params=query)
+
+print(code.url)
+
+## DESCRIPTION RETURNS PAGE SOURCE
+code = code.json()
+#print(code)
+
+
+#### EBAY SITE ID #############
+'''https://developer.ebay.com/devzone/merchandising/docs/concepts/siteidtoglobalid.html'''
+###############################
+item = code['Item']
+for i in item:
+    if i == 'Description':
+        continue
+    print(str(i) + '  ======>  ' + str(item[i]))
