@@ -29,7 +29,5 @@ def get_date():
     return date.strftime("%Y-%m-%d")
 
 
-get_date()
-
 
 

@@ -84,7 +84,7 @@ class HSBCBank:
 
                         add_to_database(self.db.records, 'HSBC Bank', i['country_name'], i['currency'], i['cur_sign'],
                                         '$40.00', self.get_date(), convert, time, text,
-                                        'img/web_logo/hsbc-logo.gif',
+                                        'img/web_logo/hsbc-logo.png',
                                         'http://www.hsbc.ca/1/2/personal/banking/accounts/foreign-currency-accounts/foreign-currency-exchange')
         except Exception as e:
             print(e)
