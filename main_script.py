@@ -56,7 +56,7 @@ if __name__ == "__main__":
                 mail_subject += "Royal Bank successfully scraped!\n"
         except Exception as e:
             mail_subject += "Error Occured during scraping.\n Error is: " + str(e) + "\n"
-
+        '''
         try:
             print("Scraping BMO")
             a = BMO()
@@ -96,7 +96,7 @@ if __name__ == "__main__":
                 mail_subject += "HSBC successfully scraped!\n"
         except Exception as e:
             mail_subject += "Error Occured during HSBC scraping.\n Error is: " + str(e) + "\n"
-
+        '''
         mail_subject += "Completed at " + str(datetime.now())
 
         send_email(["hkamboe@gmail.com", "bsef14a531@pucit.edu.pk"],
