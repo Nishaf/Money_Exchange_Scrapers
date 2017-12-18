@@ -20,7 +20,7 @@ class TorontoDominionBank:
         mongo.close()
 
     def check_date(self, time):
-        mongo = MongoClient("mongodb://hkamboe:hkamboefxratehunter8080!!@127.0.0.1/transfer_rates")
+        mongo = MongoClient("mongodb://hkamboe:harmitkamboe!!fxratehunter!!.com@127.0.0.1/transfer_rates")
         db = mongo['transfer_rates']
         items = db['records']
 
