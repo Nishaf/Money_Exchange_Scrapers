@@ -13,7 +13,7 @@ class ScotiaBank:
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--no-sandbox')
         self.driver = webdriver.Chrome('/home/Money_Exchange_Scrapers/chromedriver', chrome_options=chrome_options)#('/home/nishaf/chromedriver')#
-        mongo = MongoClient("mongodb://hkamboe:harmitkamboe!!fxratehunter!!.com@127.0.0.1/transfer_rates")
+        mongo = MongoClient("mongodb://hkamboe:harmitkamboe!!fxratehunter!!.com@127.0.0.1/admin")
         self.db = mongo['transfer_rates']
         self.run()
         self.driver.quit()
